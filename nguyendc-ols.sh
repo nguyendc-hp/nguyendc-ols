@@ -60,6 +60,12 @@ state_set() {
 # ----- Header / banner -----
 ndc_header() {
   clear
+  # Get system info
+  local ram_usage=$(free -m | awk '/Mem:/ { printf("%d/%dMB (%.2f%%)", $3, $2, $3*100/$2) }')
+  local disk_usage=$(df -BG / | awk 'NR==2 { printf("%d/%dGB (%s)", $3, $2, $5) }')
+  local cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
+  local uptime=$(uptime -p | sed 's/up //;s/days/ngày/;s/hours/giờ/;s/minutes/phút/')
+
   printf "%b" "${CYAN}"
   printf "%b" "+-----------------------------------------------------------------------+\n"
   printf "%b" "|                                                                       |\n"
@@ -68,7 +74,8 @@ ndc_header() {
   printf "%b" "|                                                                       |\n"
   printf "%b" "+-----------------------------------------------------------------------+\n"
   printf "%b" "=========================================================================\n"
-  printf "%b" "Tình trạng máy chủ: ${GREEN}Hoạt động tốt${CYAN}\n"
+  printf "%b" "CPU : ${GREEN}${cpu_usage}${CYAN} | RAM : ${GREEN}${ram_usage}${CYAN} | Disk: ${GREEN}${disk_usage}${CYAN}\n"
+  printf "%b" "Uptime: ${GREEN}${uptime}${CYAN}\n"
   printf "%b" "=========================================================================\n"
   printf "%b" "${NC}"
 }
@@ -287,8 +294,9 @@ ndc_category_menu() {
 
   while true; do
     ndc_header
-    echo "Category: ${title} (${cat})"
-    echo "────────────────────────────────────────────"
+    echo ""
+    echo -e "${CYAN}:: ${title} ::${NC}"
+    echo -e "${CYAN}────────────────────────────────────────────${NC}"
     local lines line idx=1
     local menu_ids=()
     local menu_fns=()
@@ -303,15 +311,15 @@ ndc_category_menu() {
 
     while IFS='|' read -r pid pname pdesc pmenu; do
       [[ -z "$pid" ]] && continue
-      printf "%2d) %-30s [%s]\n" "$idx" "$pname" "$pid"
-      echo "    $pdesc"
+      printf " ${GREEN}%2d)${NC} %-30s ${CYAN}[%s]${NC}\n" "$idx" "$pname" "$pid"
+      echo -e "     ${pdesc}"
       menu_ids+=("$pid")
       menu_fns+=("$pmenu")
       idx=$((idx+1))
     done <<< "$lines"
 
     echo
-    echo " 0) Quay lại"
+    echo -e " ${RED}0)${NC} Quay lại"
     echo
     read -rp "Chọn plugin: " choice
 
@@ -346,15 +354,14 @@ ndc_main_menu() {
 
   while true; do
     ndc_header
-    echo "1) WordPress tools"
-    echo "2) Node.js tools"
-    echo "3) Database tools"
-    echo "4) Ops & Monitoring"
-    echo "5) System & Security"
-    echo
-    echo "0) Thoát"
-    echo
-    read -rp "Chọn: " c
+    echo ""
+    echo -e " ${GREEN}1)${NC}  WordPress tools               ${GREEN}4)${NC} Ops & Monitoring"
+    echo -e " ${GREEN}2)${NC}  Node.js tools                 ${GREEN}5)${NC} System & Security"
+    echo -e " ${GREEN}3)${NC}  Database tools"
+    echo ""
+    echo -e " ${RED}0)${NC}  Thoát"
+    echo ""
+    read -rp "Nhập lựa chọn của bạn [0-5]: " c
 
     case "$c" in
       1) ndc_category_menu "WORDPRESS" "WordPress tools" ;;
@@ -412,7 +419,7 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
       ndc_show_intro
       sleep 2
     fi
-    ndc_header
+    # ndc_header is called inside ndc_main_menu
     ndc_main_menu
   else
     ndc_dispatch_cli "$@"
