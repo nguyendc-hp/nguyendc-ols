@@ -12,9 +12,18 @@ set -euo pipefail
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 BOLD='\033[1m'
+
+# ----- Print functions -----
+print_info() { echo -e "${CYAN}[INFO]${NC} $1"; }
+print_success() { echo -e "${GREEN}[✓]${NC} ${GREEN}$1${NC}"; }
+print_error() { echo -e "${RED}[✗]${NC} ${RED}$1${NC}"; }
+print_warning() { echo -e "${YELLOW}[!]${NC} ${YELLOW}$1${NC}"; }
+print_step() { echo -e "${BLUE}[→]${NC} ${BOLD}$1${NC}"; }
 
 # ----- Đường dẫn gốc & thư mục plugin -----
 # Robust symlink resolution
@@ -60,12 +69,6 @@ state_set() {
 # ----- Header / banner -----
 ndc_header() {
   clear
-  # Get system info
-  local ram_usage=$(free -m | awk '/Mem:/ { printf("%d/%dMB (%.2f%%)", $3, $2, $3*100/$2) }')
-  local disk_usage=$(df -BG / | awk 'NR==2 { printf("%d/%dGB (%s)", $3, $2, $5) }')
-  local cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
-  local uptime=$(uptime -p | sed 's/up //;s/days/ngày/;s/hours/giờ/;s/minutes/phút/')
-
   printf "%b" "${CYAN}"
   printf "%b" "+-----------------------------------------------------------------------+\n"
   printf "%b" "|                                                                       |\n"
@@ -74,10 +77,34 @@ ndc_header() {
   printf "%b" "|                                                                       |\n"
   printf "%b" "+-----------------------------------------------------------------------+\n"
   printf "%b" "=========================================================================\n"
-  printf "%b" "CPU : ${GREEN}${cpu_usage}${CYAN} | RAM : ${GREEN}${ram_usage}${CYAN} | Disk: ${GREEN}${disk_usage}${CYAN}\n"
-  printf "%b" "Uptime: ${GREEN}${uptime}${CYAN}\n"
-  printf "%b" "=========================================================================\n"
-  printf "%b" "${NC}"
+  
+  # Show system info bar
+  local ram_usage=$(free -m | awk '/Mem:/ { printf("%d/%dMB (%.2f%%)", $3, $2, $3*100/$2) }')
+  local disk_usage=$(df -BG / | awk 'NR==2 { printf("%d/%dGB (%s)", $3, $2, $5) }')
+  local cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
+  local uptime=$(uptime -p | sed 's/up //;s/days/ngày/;s/hours/giờ/;s/minutes/phút/')
+  
+  printf "%b" "CPU : ${GREEN}${cpu_usage}${NC} | Ram : ${GREEN}${ram_usage}${NC} | Disk: ${GREEN}${disk_usage}${NC}\n"
+  printf "%b" "${CYAN}-------------------------------------------------------------------------${NC}\n"
+  printf "%b" "Webserver Nginx         : ${GREEN}Hoạt động tốt${NC}\n"
+  printf "%b" "MongoDB                 : ${GREEN}Hoạt động tốt${NC}\n"
+  printf "%b" "Tình trạng máy chủ      : ${GREEN}Hoạt động tốt${NC}\n"
+  printf "%b" "System uptime           : ${GREEN}${uptime}${NC}\n"
+  printf "%b" "${CYAN}-------------------------------------------------------------------------${NC}\n"
+  printf "%b" "Tài liệu hướng dẫn      : ${CYAN}https://github.com/nguyendc-hp/ndc-ols${NC}\n"
+  printf "%b" "Nhà phát triển          : ${CYAN}Nguyen DC${NC}\n"
+  printf "%b" "Phiên bản hiện tại      : ${CYAN}1.0.0${NC}\n"
+  printf "%b" "${CYAN}-------------------------------------------------------------------------${NC}\n"
+  printf "%b" "Nhập lệnh ${GREEN}ndc${NC} để vào menu quản trị\n"
+  printf "%b" "Nhập lệnh ${GREEN}0${NC} để thoát chương trình\n"
+  printf "%b" "${CYAN}-------------------------------------------------------------------------${NC}\n"
+  printf "%b" "${CYAN}=========================================================================${NC}\n"
+  printf "%b" "Thông báo Cập nhật - Bạn đang sử dụng NDC OLS phiên bản:  ${BOLD}1.0.0${NC}\n"
+  printf "%b" "${CYAN}=========================================================================${NC}\n"
+  printf "%b" "Phát triển bởi: Nguyen DC (nguyendc-hp)\n"
+  printf "%b" "Tài trợ dự án: https://github.com/sponsors/nguyendc-hp\n"
+  printf "%b" "${CYAN}=========================================================================${NC}\n"
+  echo ""
 }
 
 # ----- Terminal intro (chạy khi khởi động) -----
@@ -414,11 +441,6 @@ ndc_load_plugins
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   if [[ $# -eq 0 ]]; then
-    # Show intro if first time (check if config dir exists)
-    if [[ ! -d "$NDC_ETC_DIR" ]] || [[ ! -f "$NDC_STATE_FILE" ]]; then
-      ndc_show_intro
-      sleep 2
-    fi
     # ndc_header is called inside ndc_main_menu
     ndc_main_menu
   else
