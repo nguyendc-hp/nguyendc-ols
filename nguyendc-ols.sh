@@ -35,36 +35,30 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 NDC_BASE_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 NDC_PLUGINS_DIR="${NDC_BASE_DIR}/plugins"
+NDC_CORE_DIR="${NDC_BASE_DIR}/core"
 
 # ----- Thư mục cấu hình & state -----
 NDC_ETC_DIR="/etc/nguyendc-ols"
 NDC_STATE_FILE="${NDC_ETC_DIR}/state.env"
+export STATE_FILE="$NDC_STATE_FILE" # For core/state.sh
 
 mkdir -p "$NDC_ETC_DIR"
 
-# ----- Logging helpers -----
-log_info()  { echo -e "[\e[32mINFO\e[0m]  $*"; }
-log_warn()  { echo -e "[\e[33mWARN\e[0m]  $*"; }
-log_error() { echo -e "[\e[31mERROR\e[0m] $*" >&2; }
-
-# ----- State helpers (key=value trong state.env) -----
-state_get() {
-  local key="$1"
-  [[ -f "$NDC_STATE_FILE" ]] || return 0
-  # shellcheck disable=SC1090
-  source "$NDC_STATE_FILE"
-  eval "echo \"\${$key-}\""
+# ----- Load Core Modules -----
+ndc_load_core() {
+  if [[ ! -d "$NDC_CORE_DIR" ]]; then
+    echo "ERROR: Core directory not found at $NDC_CORE_DIR"
+    exit 1
+  fi
+  
+  for f in "$NDC_CORE_DIR"/*.sh; do
+    [[ -e "$f" ]] || continue
+    # shellcheck disable=SC1090
+    source "$f"
+  done
 }
 
-state_set() {
-  local key="$1" value="$2"
-  touch "$NDC_STATE_FILE"
-
-  # Xoá dòng cũ (nếu có)
-  sed -i "/^${key}=/d" "$NDC_STATE_FILE" 2>/dev/null || true
-  # Ghi dòng mới
-  printf '%s=%q\n' "$key" "$value" >> "$NDC_STATE_FILE"
-}
+ndc_load_core
 
 # ----- Header / banner -----
 ndc_banner() {
@@ -271,55 +265,20 @@ ndc_with_apt_guard() {
 }
 
 # ============================================================
-#  PLUGIN SYSTEM
+#  PLUGIN SYSTEM (Delegated to core/plugins.sh)
 # ============================================================
-
-# Mỗi plugin sẽ gọi:
-# ndc_register_plugin "id" "Name" "CATEGORY" "Description" "menu_function"
-
-NDC_PLUGIN_IDS=()
-NDC_PLUGIN_NAMES=()
-NDC_PLUGIN_CATEGORIES=()
-NDC_PLUGIN_DESCS=()
-NDC_PLUGIN_MENU_FNS=()
-
-ndc_register_plugin() {
-  local id="${1-}" name="${2-}" cat="${3-}" desc="${4-}" menu_fn="${5-}"
-
-  if [[ -z "$id" ]]; then
-    return 0
-  fi
-
-  NDC_PLUGIN_IDS+=("$id")
-  NDC_PLUGIN_NAMES+=("$name")
-  NDC_PLUGIN_CATEGORIES+=("$cat")
-  NDC_PLUGIN_DESCS+=("$desc")
-  NDC_PLUGIN_MENU_FNS+=("$menu_fn")
-}
-
-ndc_load_plugins() {
-  if [[ ! -d "$NDC_PLUGINS_DIR" ]]; then
-    log_warn "Không tìm thấy thư mục plugins: ${NDC_PLUGINS_DIR}"
-    return 0
-  fi
-
-  for f in "$NDC_PLUGINS_DIR"/*.plugin.sh; do
-    [[ -e "$f" ]] || continue
-    # shellcheck disable=SC1090
-    source "$f"
-  done
-}
 
 ndc_list_plugins_by_category() {
   local cat="$1"
   local i
-  for ((i=0; i<${#NDC_PLUGIN_IDS[@]}; i++)); do
-    if [[ "${NDC_PLUGIN_CATEGORIES[$i]}" == "$cat" ]]; then
+  # Use arrays from core/plugins.sh (NDC_PLUGINS_*)
+  for ((i=0; i<${#NDC_PLUGINS_IDS[@]}; i++)); do
+    if [[ "${NDC_PLUGINS_CATEGORIES[$i]}" == "$cat" ]]; then
       printf "%s|%s|%s|%s\n" \
-        "${NDC_PLUGIN_IDS[$i]}" \
-        "${NDC_PLUGIN_NAMES[$i]}" \
-        "${NDC_PLUGIN_DESCS[$i]}" \
-        "${NDC_PLUGIN_MENU_FNS[$i]}"
+        "${NDC_PLUGINS_IDS[$i]}" \
+        "${NDC_PLUGINS_NAMES[$i]}" \
+        "${NDC_PLUGINS_DESCRIPTIONS[$i]}" \
+        "${NDC_PLUGINS_MENU_FUNCS[$i]}"
     fi
   done
 }
@@ -431,9 +390,9 @@ ndc_dispatch_cli() {
 
   # Nếu không có *_cli, thử gọi menu_fn
   local i
-  for ((i=0; i<${#NDC_PLUGIN_IDS[@]}; i++)); do
-    if [[ "${NDC_PLUGIN_IDS[$i]}" == "$plugin_id" ]]; then
-      local menu_fn="${NDC_PLUGIN_MENU_FNS[$i]}"
+  for ((i=0; i<${#NDC_PLUGINS_IDS[@]}; i++)); do
+    if [[ "${NDC_PLUGINS_IDS[$i]}" == "$plugin_id" ]]; then
+      local menu_fn="${NDC_PLUGINS_MENU_FUNCS[$i]}"
       if [[ -n "$menu_fn" && "$(type -t "$menu_fn")" == "function" ]]; then
         "$menu_fn"
         return
@@ -450,7 +409,7 @@ ndc_dispatch_cli() {
 #  ENTRY POINT
 # ============================================================
 
-ndc_load_plugins
+ndc_plugins_load_all "$NDC_PLUGINS_DIR"
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   if [[ $# -eq 0 ]]; then
