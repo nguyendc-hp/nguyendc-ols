@@ -8,18 +8,11 @@
 
 set -euo pipefail
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-# Logging functions
-log_info()  { echo -e "${GREEN}[INFO]${NC}  $*"; }
-log_warn()  { echo -e "${YELLOW}[WARN]${NC}  $*"; }
-log_error() { echo -e "${RED}[ERROR]${NC} $*" >&2; }
-log_step()  { echo -e "${BLUE}[STEP]${NC}  $*"; }
+# Logging functions (without color codes to avoid shell issues)
+log_info()  { echo "[INFO]  $*"; }
+log_warn()  { echo "[WARN]  $*" >&2; }
+log_error() { echo "[ERROR] $*" >&2; }
+log_step()  { echo "[STEP]  $*"; }
 
 # ============================================================
 # PRE-FLIGHT CHECKS
@@ -82,31 +75,40 @@ install_nguyendc_ols() {
 
   # Determine installation method
   if [[ -f "$(pwd)/nguyendc-ols.sh" ]]; then
-    # Already in the directory
+    # Already in the cloned directory
     INSTALL_DIR="$(pwd)"
     log_info "Using current directory: $INSTALL_DIR"
   else
-    # Need to clone or use existing clone
+    # Need to copy to /opt directory
     INSTALL_DIR="/opt/nguyendc-ols"
+    log_info "Target installation directory: $INSTALL_DIR"
     
     if [[ ! -d "$INSTALL_DIR" ]]; then
-      log_info "Creating installation directory: $INSTALL_DIR"
       mkdir -p "$INSTALL_DIR"
-      
-      if [[ -d "./nguyendc-ols" ]]; then
-        log_info "Copying from ./nguyendc-ols..."
-        cp -r ./nguyendc-ols/* "$INSTALL_DIR/"
-      else
-        log_warn "nguyendc-ols directory not found locally"
-        log_info "Cloning from GitHub..."
-        git clone https://github.com/nguyendc-hp/nguyendc-ols.git "$INSTALL_DIR"
-      fi
+    fi
+    
+    # Check if we have files to copy from current directory
+    if [[ -f "./nguyendc-ols.sh" ]]; then
+      log_info "Copying files from current directory..."
+      cp -r ./* "$INSTALL_DIR/" 2>/dev/null || true
+    elif [[ -d "./nguyendc-ols" ]]; then
+      log_info "Copying from ./nguyendc-ols..."
+      cp -r ./nguyendc-ols/* "$INSTALL_DIR/" 2>/dev/null || true
+    else
+      log_warn "nguyendc-ols files not found locally"
+      log_info "Cloning from GitHub..."
+      git clone https://github.com/nguyendc-hp/nguyendc-ols.git "$INSTALL_DIR" 2>&1 || {
+        log_error "Failed to clone repository"
+        exit 1
+      }
     fi
   fi
 
   # Verify installation
   if [[ ! -f "$INSTALL_DIR/nguyendc-ols.sh" ]]; then
-    log_error "Installation failed - nguyendc-ols.sh not found"
+    log_error "Installation failed - nguyendc-ols.sh not found at $INSTALL_DIR/nguyendc-ols.sh"
+    log_error "Current directory: $(pwd)"
+    log_error "Directory contents: $(ls -la $(pwd) 2>/dev/null | head -20)"
     exit 1
   fi
 
@@ -133,10 +135,10 @@ create_alias() {
   chmod +x /usr/local/bin/ndc
 
   # Verify alias works
-  if /usr/local/bin/ndc --version &>/dev/null || [[ -f /usr/local/bin/ndc ]]; then
+  if [[ -L /usr/local/bin/ndc ]]; then
     log_info "Alias 'ndc' created successfully"
   else
-    log_warn "Alias created but verification failed"
+    log_warn "Alias creation may have failed - checking..."
   fi
 }
 
@@ -243,9 +245,11 @@ main() {
   check_dependencies
 
   echo ""
+  log_step "Starting installation..."
+  echo ""
 
   # Installation
-  INSTALL_DIR=$(install_nguyendc_ols)
+  INSTALL_DIR=$(install_nguyendc_ols) || exit 1
   setup_permissions "$INSTALL_DIR"
   create_alias "$INSTALL_DIR"
   setup_directories
@@ -256,8 +260,7 @@ main() {
   # Summary
   print_summary "$INSTALL_DIR"
 
-  log_info "Installation completed successfully! 🎉"
-  log_info "You can now use: ndc"
+  log_info "Installation completed successfully!"
 }
 
 # ============================================================
