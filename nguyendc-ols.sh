@@ -77,13 +77,19 @@ ndc_header() {
   printf "%b" "|                                                                       |\n"
   printf "%b" "+-----------------------------------------------------------------------+\n"
   printf "%b" "=========================================================================\n"
-  
-  # Show system info bar
+  printf "%b" "Tình trạng máy chủ: ${GREEN}Hoạt động tốt${CYAN}\n"
+  printf "%b" "=========================================================================\n"
+  printf "%b" "${NC}"
+}
+
+# ----- System Info Bar (Detailed) -----
+ndc_system_info() {
+  # Get system info
   local ram_usage=$(free -m | awk '/Mem:/ { printf("%d/%dMB (%.2f%%)", $3, $2, $3*100/$2) }')
   local disk_usage=$(df -BG / | awk 'NR==2 { printf("%d/%dGB (%s)", $3, $2, $5) }')
   local cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}')
   local uptime=$(uptime -p | sed 's/up //;s/days/ngày/;s/hours/giờ/;s/minutes/phút/')
-  
+
   printf "%b" "CPU : ${GREEN}${cpu_usage}${NC} | Ram : ${GREEN}${ram_usage}${NC} | Disk: ${GREEN}${disk_usage}${NC}\n"
   printf "%b" "${CYAN}-------------------------------------------------------------------------${NC}\n"
   printf "%b" "Webserver Nginx         : ${GREEN}Hoạt động tốt${NC}\n"
@@ -120,6 +126,9 @@ ndc_show_intro() {
   printf "%b" "Chúc bạn có buổi chiều tuyệt vời - Chào mừng bạn đến với NDC OLS\n"
   printf "%b" "-------------------------------------------------------------------------\n"
   printf "%b" "${NC}"
+  
+  # Show detailed system info
+  ndc_system_info
 }
 
 # ============================================================
@@ -441,6 +450,11 @@ ndc_load_plugins
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   if [[ $# -eq 0 ]]; then
+    # Show intro if first time (check if config dir exists)
+    if [[ ! -d "$NDC_ETC_DIR" ]] || [[ ! -f "$NDC_STATE_FILE" ]]; then
+      ndc_show_intro
+      sleep 2
+    fi
     # ndc_header is called inside ndc_main_menu
     ndc_main_menu
   else
