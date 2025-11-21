@@ -67,7 +67,23 @@ state_set() {
 }
 
 # ----- Header / banner -----
-ndc_header() {
+ndc_banner() {
+  if [ "${1-}" != "no-clear" ]; then
+      clear
+  fi
+  printf "%b" "${CYAN}"
+  printf "%b" "+-----------------------------------------------------------------------+\n"
+  printf "%b" "|                                                                       |\n"
+  printf "%b" "|                       ${BOLD}NDC OLS${CYAN} phiên bản: ${BOLD}1.0.0${CYAN}                        |\n"
+  printf "%b" "|                  Công cụ quản lý VPS Node.js & React                  |\n"
+  printf "%b" "|                                                                       |\n"
+  printf "%b" "+-----------------------------------------------------------------------+\n"
+  printf "%b" "Chúc bạn có buổi chiều tuyệt vời - Chào mừng bạn đến với NDC OLS\n"
+  printf "%b" "-------------------------------------------------------------------------\n"
+  printf "%b" "${NC}"
+}
+
+ndc_menu_header() {
   clear
   printf "%b" "${CYAN}"
   printf "%b" "+-----------------------------------------------------------------------+\n"
@@ -115,19 +131,7 @@ ndc_system_info() {
 
 # ----- Terminal intro (chạy khi khởi động) -----
 ndc_show_intro() {
-  clear
-  printf "%b" "${CYAN}"
-  printf "%b" "+-----------------------------------------------------------------------+\n"
-  printf "%b" "|                                                                       |\n"
-  printf "%b" "|                       ${BOLD}NDC OLS${CYAN} phiên bản: ${BOLD}1.0.0${CYAN}                        |\n"
-  printf "%b" "|                  Công cụ quản lý VPS Node.js & React                  |\n"
-  printf "%b" "|                                                                       |\n"
-  printf "%b" "+-----------------------------------------------------------------------+\n"
-  printf "%b" "Chúc bạn có buổi chiều tuyệt vời - Chào mừng bạn đến với NDC OLS\n"
-  printf "%b" "-------------------------------------------------------------------------\n"
-  printf "%b" "${NC}"
-  
-  # Show detailed system info
+  ndc_banner "no-clear"
   ndc_system_info
 }
 
@@ -329,7 +333,7 @@ ndc_category_menu() {
   local title="$2"
 
   while true; do
-    ndc_header
+    ndc_menu_header
     echo ""
     echo -e "${CYAN}:: ${title} ::${NC}"
     echo -e "${CYAN}────────────────────────────────────────────${NC}"
@@ -389,7 +393,7 @@ ndc_main_menu() {
   ndc_check_ubuntu_supported
 
   while true; do
-    ndc_header
+    ndc_menu_header
     echo ""
     echo -e " ${GREEN}1)${NC}  WordPress tools               ${GREEN}4)${NC} Ops & Monitoring"
     echo -e " ${GREEN}2)${NC}  Node.js tools                 ${GREEN}5)${NC} System & Security"
@@ -455,8 +459,11 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
       ndc_show_intro
       sleep 2
     fi
-    # ndc_header is called inside ndc_main_menu
+    # ndc_menu_header is called inside ndc_main_menu
     ndc_main_menu
+  elif [[ "$1" == "--info" ]]; then
+    ndc_show_intro
+    exit 0
   else
     ndc_dispatch_cli "$@"
   fi
