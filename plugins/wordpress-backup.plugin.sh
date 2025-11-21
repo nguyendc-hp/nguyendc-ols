@@ -4,7 +4,7 @@
 # Plugin: WordPress Backup
 # Project: nguyendc-ols
 # ID: wpbackup
-# Category: BKP
+# Category: WORDPRESS
 # ======================================
 
 WP_BASE_DIR="/var/www"
@@ -162,6 +162,6 @@ wpbackup_cli() {
 ndc_register_plugin \
   "wpbackup" \
   "WordPress Backup" \
-  "BKP" \
+  "WORDPRESS" \
   "Backup WordPress (files + DB) + retention + rclone" \
   "wpb_menu"

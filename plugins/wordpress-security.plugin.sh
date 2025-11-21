@@ -4,7 +4,7 @@
 # Plugin: WordPress Security Firewall
 # Project: nguyendc-ols
 # ID: wpsec
-# Category: SEC
+# Category: WORDPRESS
 # ======================================
 
 WP_BASE_DIR="/var/www"
@@ -229,6 +229,6 @@ wpsec_cli() {
 ndc_register_plugin \
   "wpsec" \
   "WordPress Security Firewall" \
-  "SEC" \
+  "WORDPRESS" \
   "Hardening + Nginx rules + Fail2ban cho WordPress" \
   "wpsec_menu"

@@ -4,7 +4,7 @@
 # Plugin: Simple Backup
 # Project: nguyendc-ols
 # ID: backup
-# Category: BKP
+# Category: OPS
 # ======================================
 
 BACKUP_STATE_KEY="BACKUP_ENABLED"
@@ -96,9 +96,9 @@ backup_menu() {
   done
 }
 
-ndc_register_plugin \
-  "backup" \
-  "Simple Backup" \
-  "BKP" \
-  "Backup nhanh /etc/nginx và /var/www vào /opt/nguyendc-ols/backups" \
+ndc_register_plugin 
+  "backup" 
+  "Simple Backup" 
+  "OPS" 
+  "Backup nhanh /etc/nginx và /var/www vào /opt/nguyendc-ols/backups" 
   "backup_menu"

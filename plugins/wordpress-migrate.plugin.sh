@@ -4,7 +4,7 @@
 # Plugin: WordPress Migration
 # Project: nguyendc-ols
 # ID: wpmigrate
-# Category: MIGRATE
+# Category: WORDPRESS
 # ======================================
 
 WP_BASE_DIR="/var/www"
@@ -221,6 +221,6 @@ wpmigrate_cli() {
 ndc_register_plugin \
   "wpmigrate" \
   "WordPress Migration" \
-  "MIGRATE" \
+  "WORDPRESS" \
   "Clone / migrate WordPress sang domain khác (files + DB)" \
   "wpm_menu"

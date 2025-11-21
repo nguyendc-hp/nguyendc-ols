@@ -4,7 +4,7 @@
 # Plugin: WordPress Manager
 # Project: nguyendc-ols
 # ID: wordpress
-# Category: APP
+# Category: WORDPRESS
 # ======================================
 
 WP_BASE_DIR="/var/www"
@@ -357,6 +357,6 @@ wordpress_cli() {
 ndc_register_plugin \
   "wordpress" \
   "WordPress Manager" \
-  "APP" \
+  "WORDPRESS" \
   "Tạo & tối ưu WordPress (tốc độ + bảo mật)" \
   "wp_menu"

@@ -4,7 +4,7 @@
 # Plugin: Certbot (Let's Encrypt)
 # Project: nguyendc-ols
 # ID: certbot
-# Category: SSL
+# Category: SYSTEM
 # ======================================
 
 CERTBOT_STATE_KEY="CERTBOT_INSTALLED"
@@ -123,6 +123,6 @@ certbot_menu() {
 ndc_register_plugin \
   "certbot" \
   "Certbot (SSL)" \
-  "SSL" \
+  "SYSTEM" \
   "Cài đặt Certbot và cấp SSL Let's Encrypt cho Nginx" \
   "certbot_menu"

@@ -4,7 +4,7 @@
 # Plugin: Node.js + PM2
 # Project: nguyendc-ols
 # ID: nodejs
-# Category: RUNTIME
+# Category: NODE
 # ======================================
 
 NODE_STATE_KEY="NODEJS_INSTALLED"
@@ -168,6 +168,6 @@ nodejs_menu() {
 ndc_register_plugin \
   "nodejs" \
   "Node.js + PM2" \
-  "RUNTIME" \
+  "NODE" \
   "Cài đặt và quản lý môi trường Node.js + PM2" \
   "nodejs_menu"

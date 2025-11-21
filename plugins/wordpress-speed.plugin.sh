@@ -4,7 +4,7 @@
 # Plugin: WordPress SpeedPack (WP Booster)
 # Project: nguyendc-ols
 # ID: wpspeed
-# Category: OPTIMIZE
+# Category: WORDPRESS
 # ======================================
 
 WP_BASE_DIR="/var/www"
@@ -280,6 +280,6 @@ wpspeed_cli() {
 ndc_register_plugin \
   "wpspeed" \
   "WordPress SpeedPack" \
-  "OPTIMIZE" \
+  "WORDPRESS" \
   "Tối ưu tốc độ WordPress (Nginx cache + MU-plugin + wp-config + Redis)" \
   "wps_menu"

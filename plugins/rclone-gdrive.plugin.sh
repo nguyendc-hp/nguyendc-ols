@@ -84,7 +84,7 @@ rclone_backup_to_gdrive() {
 }
 
 rclone_show_status_line() {
-  if rclone_is_installed(); then
+  if rclone_is_installed; then
     echo "✅ rclone đã cài - remote mặc định: ${RCLONE_REMOTE_NAME}"
   else
     echo "❌ rclone chưa cài"
