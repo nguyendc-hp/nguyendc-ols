@@ -8,33 +8,34 @@
 
 ## 🚀 Installation (Choose One)
 
-### Option 1: Quick Install (Recommended)
-```bash
-sudo bash <(curl -fsSL https://raw.githubusercontent.com/nguyendc-hp/nguyendc-ols/main/install.sh)
-```
-
-### Option 2: Clone & Install
+### Option 1: Automated Install (Recommended)
 ```bash
 git clone https://github.com/nguyendc-hp/nguyendc-ols.git
 cd nguyendc-ols
 sudo bash install.sh
 ```
 
-### Option 3: Manual Setup
+The installer will:
+- ✅ Verify Ubuntu version (20.04/22.04/24.04)
+- ✅ Install dependencies
+- ✅ Setup directories
+- ✅ Create 'ndc' alias
+- ✅ Configure permissions
+- ✅ Display quick start guide
+
+### Option 2: Manual Setup (Advanced)
 ```bash
-# Clone or download the repository
 git clone https://github.com/nguyendc-hp/nguyendc-ols.git
 cd nguyendc-ols
 
-# Copy to system location
+# Setup manually
 sudo mkdir -p /opt/nguyendc-ols
 sudo cp -r ./* /opt/nguyendc-ols/
-
-# Create alias
-sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
+sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 
-# Test
+# Verify
+which ndc
 ndc
 ```
 
@@ -245,24 +246,93 @@ sudo vi /etc/nguyendc-ols/state.env
 
 ---
 
-## 🐛 Troubleshooting
+## 🐛 Installation & Usage Troubleshooting
 
-### Permission Denied
+### Issue 1: "install.sh: No such file or directory"
+**Cause:** You're in the wrong directory or not in the cloned repo
+
+**Solution:**
+```bash
+# Make sure you're in the cloned nguyendc-ols directory
+pwd
+ls -la install.sh
+
+# Should be in: /root/nguyendc-ols or ~/nguyendc-ols
+
+# Then run it
+sudo bash install.sh
+```
+
+### Issue 2: Permission Denied when running 'ndc'
+**Error:** `bash: /usr/local/bin/ndc: Permission denied`
+
+**Solution:**
 ```bash
 # Fix: Make script executable
 sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
+sudo chmod +x /usr/local/bin/ndc
+
+# Test
+which ndc
+ndc
 ```
 
-### Plugin Not Found
+### Issue 3: "command not found: ndc"
+**Cause:** Alias not created or shell not reloaded
+
+**Solution:**
 ```bash
-# Check installed plugins
-ndc help
+# Create the alias manually
+sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 
-# Check plugin directory
-ls /opt/nguyendc-ols/plugins/
+# Verify it exists
+ls -la /usr/local/bin/ndc
+
+# Reload shell or run directly
+/usr/local/bin/ndc
+
+# Or reload your shell
+exec bash
+ndc
 ```
 
-### APT Lock (Held by unattended-upgrades)
+### Issue 4: Plugin Directory Not Found
+**Error:** "Không tìm thấy thư mục plugins"
+
+**Solution:**
+```bash
+# Check if plugins exist
+ls -la /opt/nguyendc-ols/plugins/
+
+# If empty, files weren't copied
+# Reinstall from the correct directory
+cd ~/nguyendc-ols
+sudo bash install.sh
+```
+
+### Issue 5: "no such file or directory" when running ndc
+**Cause:** Script installed in wrong location
+
+**Solution:**
+```bash
+# Check where ndc points to
+ls -la /usr/local/bin/ndc
+
+# Should point to: /opt/nguyendc-ols/nguyendc-ols.sh
+# Verify the target exists
+ls -la /opt/nguyendc-ols/nguyendc-ols.sh
+
+# If not, reinstall:
+sudo mkdir -p /opt/nguyendc-ols
+sudo cp -r ~/nguyendc-ols/* /opt/nguyendc-ols/
+sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
+sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
+```
+
+### Issue 6: APT Lock (Held by unattended-upgrades)
+**Error:** "E: Could not get lock /var/lib/apt/lists/lock"
+
+**Solution:**
 ```bash
 # Script automatically handles this
 # If manual intervention needed:
@@ -271,14 +341,19 @@ sudo rm -f /var/lib/apt/lists/lock
 sudo apt-get update
 ```
 
-### Permission Issues with WordPress
+### Issue 7: Permission Issues with WordPress
+**After installing WordPress:**
+
 ```bash
 # Fix WordPress directory permissions
 sudo chown -R www-data:www-data /var/www/example.com
 sudo chmod -R 755 /var/www/example.com
+
+# Fix wp-content permissions
+sudo chmod -R 775 /var/www/example.com/wp-content
 ```
 
-### SSL Certificate Issues
+### Issue 8: SSL Certificate Issues
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -288,6 +363,38 @@ sudo certbot renew
 
 # For specific domain
 sudo certbot renew --cert-name example.com
+```
+
+---
+
+## ✅ Verification Checklist
+
+After installation, verify everything works:
+
+```bash
+# 1. Check ndc command exists
+which ndc
+# Output: /usr/local/bin/ndc
+
+# 2. Check installation directory
+ls -la /opt/nguyendc-ols/
+# Should have: nguyendc-ols.sh, plugins/, core/, README.md
+
+# 3. Check config directory
+sudo ls -la /etc/nguyendc-ols/
+# Should be writable by root
+
+# 4. Check log directory
+sudo ls -la /var/log/nguyendc-ols/
+# Should exist
+
+# 5. Run ndc without arguments (shows menu)
+ndc
+# Should display welcome screen and menu
+
+# 6. Check plugin loading
+ndc help
+# Should list available plugins (if help plugin exists)
 ```
 
 ---

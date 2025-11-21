@@ -30,33 +30,32 @@
 ### System Requirements
 
 - **OS:** Ubuntu 20.04 LTS / 22.04 LTS / 24.04 LTS
-- **Bash:** Version 5.0 or higher
+- **Bash:** Version 4.0 or higher
 - **Permissions:** Root or sudo access required
 - **Architecture:** x86_64 (Intel/AMD)
 - **Disk Space:** Minimum 2 GB free
 
 ### Installation
 
-#### Option 1: Direct Install
-```bash
-sudo bash <(curl -fsSL https://raw.githubusercontent.com/nguyendc-hp/nguyendc-ols/main/install.sh)
-```
-
-#### Option 2: Clone & Install
+#### Option 1: Automated Installation (Recommended)
 ```bash
 git clone https://github.com/nguyendc-hp/nguyendc-ols.git
 cd nguyendc-ols
 sudo bash install.sh
 ```
 
-#### Option 3: Manual Setup
+#### Option 2: Manual Installation
 ```bash
+git clone https://github.com/nguyendc-hp/nguyendc-ols.git
+cd nguyendc-ols
 sudo mkdir -p /opt/nguyendc-ols
 sudo cp -r ./* /opt/nguyendc-ols/
-sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
+sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 ndc
 ```
+
+**Detailed Installation Guide:** See [INSTALLATION.md](INSTALLATION.md)
 
 ### First Use
 
