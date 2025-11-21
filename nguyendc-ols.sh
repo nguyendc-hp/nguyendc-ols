@@ -131,7 +131,7 @@ ndc_system_info() {
 
 # ----- Terminal intro (chạy khi khởi động) -----
 ndc_show_intro() {
-  ndc_banner "no-clear"
+  # Only show system info, no banner (banner is for menu)
   ndc_system_info
 }
 
@@ -454,11 +454,7 @@ ndc_load_plugins
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   if [[ $# -eq 0 ]]; then
-    # Show intro if first time (check if config dir exists)
-    if [[ ! -d "$NDC_ETC_DIR" ]] || [[ ! -f "$NDC_STATE_FILE" ]]; then
-      ndc_show_intro
-      sleep 2
-    fi
+    # Always go straight to main menu
     # ndc_menu_header is called inside ndc_main_menu
     ndc_main_menu
   elif [[ "$1" == "--info" ]]; then
