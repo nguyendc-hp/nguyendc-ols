@@ -44,7 +44,7 @@ log_error() {
 
 log_debug() {
   local msg="$1"
-  if [[ "$NGUYENDC_OLS_DEBUG" == "1" ]]; then
+  if [[ "${NGUYENDC_OLS_DEBUG:-0}" == "1" ]]; then
     echo -e "${BLUE}[DEBUG]${NC} $msg"
   fi
   log_to_file "DEBUG" "$msg"
