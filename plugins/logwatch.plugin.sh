@@ -4,7 +4,7 @@
 # Plugin: Log Watcher
 # Project: nguyendc-ols
 # ID: logwatch
-# Category: MON
+# Category: OPS
 # ======================================
 
 logwatch_tail_file() {
@@ -54,6 +54,6 @@ logwatch_show_status_line() {
 ndc_register_plugin \
   "logwatch" \
   "Log Watcher" \
-  "MON" \
+  "OPS" \
   "Xem nhanh log Nginx, system, nguyendc-ols" \
   "logwatch_menu"

@@ -4,7 +4,7 @@
 # Plugin: Fail2ban
 # Project: nguyendc-ols
 # ID: fail2ban
-# Category: SEC
+# Category: SYSTEM
 # ======================================
 
 FAIL2BAN_SERVICE="fail2ban"
@@ -147,6 +147,6 @@ fail2ban_menu() {
 ndc_register_plugin \
   "fail2ban" \
   "Fail2ban" \
-  "SEC" \
+  "SYSTEM" \
   "Cài đặt và quản lý Fail2ban chống brute-force" \
   "fail2ban_menu"

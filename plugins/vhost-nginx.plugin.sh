@@ -4,7 +4,7 @@
 # Plugin: Nginx VHost Manager
 # Project: nguyendc-ols
 # ID: vhost
-# Category: WEB
+# Category: SYSTEM
 # ======================================
 
 VHOST_STATE_KEY="VHOST_MANAGER_ENABLED"
@@ -145,6 +145,6 @@ vhost_menu() {
 ndc_register_plugin \
   "vhost" \
   "Nginx VHost" \
-  "WEB" \
+  "SYSTEM" \
   "Tạo/Xoá/Quản lý Nginx virtual hosts (domain → webroot)" \
   "vhost_menu"

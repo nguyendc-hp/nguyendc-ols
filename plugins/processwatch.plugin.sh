@@ -4,7 +4,7 @@
 # Plugin: Process Watch
 # Project: nguyendc-ols
 # ID: processwatch
-# Category: MON
+# Category: OPS
 # ======================================
 
 PROCESSWATCH_CONF="/etc/nguyendc-ols/processwatch.conf"
@@ -155,6 +155,6 @@ processwatch_cli() {
 ndc_register_plugin \
   "processwatch" \
   "Process Watch" \
-  "MON" \
+  "OPS" \
   "Theo dõi service/process quan trọng, báo Telegram khi down" \
   "processwatch_menu"

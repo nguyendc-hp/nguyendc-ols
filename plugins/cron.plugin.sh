@@ -4,7 +4,7 @@
 # Plugin: Cron Manager
 # Project: nguyendc-ols
 # ID: cron
-# Category: SYS
+# Category: SYSTEM
 # ======================================
 
 CRON_STATE_KEY="CRON_ENABLED"
@@ -114,6 +114,6 @@ cron_menu() {
 ndc_register_plugin \
   "cron" \
   "Cron Manager" \
-  "SYS" \
+  "SYSTEM" \
   "Quản lý cron cho backup và tác vụ nguyendc-ols" \
   "cron_menu"

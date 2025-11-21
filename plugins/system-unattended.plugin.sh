@@ -45,7 +45,7 @@ unattended_enable_now() {
 
 # Ví dụ demo: update & upgrade với apt guard
 unattended_safe_update_demo() {
-  local _do_update() {
+  _do_update() {
     log_info "Chạy safe apt update/upgrade (demo)..."
     apt update -y
     apt upgrade -y

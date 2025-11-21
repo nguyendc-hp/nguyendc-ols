@@ -4,7 +4,7 @@
 # Plugin: phpMyAdmin
 # Project: nguyendc-ols
 # ID: phpmyadmin
-# Category: GUI
+# Category: DB
 # ======================================
 
 PHPMYADMIN_STATE_KEY="PHPMYADMIN_INSTALLED"
@@ -103,6 +103,6 @@ phpmyadmin_menu() {
 ndc_register_plugin \
   "phpmyadmin" \
   "phpMyAdmin" \
-  "GUI" \
+  "DB" \
   "Cài đặt và quản lý phpMyAdmin cho MariaDB/MySQL" \
   "phpmyadmin_menu"

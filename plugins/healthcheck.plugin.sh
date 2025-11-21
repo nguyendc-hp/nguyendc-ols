@@ -4,7 +4,7 @@
 # Plugin: Health Check
 # Project: nguyendc-ols
 # ID: healthcheck
-# Category: MON
+# Category: OPS
 # ======================================
 
 HEALTH_CPU_THRESHOLD_KEY="HEALTH_CPU_THRESHOLD"      # %
@@ -190,6 +190,6 @@ healthcheck_cli() {
 ndc_register_plugin \
   "healthcheck" \
   "Health Check" \
-  "MON" \
+  "OPS" \
   "Kiểm tra CPU/RAM/load/disk và gửi cảnh báo Telegram nếu quá tải" \
   "healthcheck_menu"

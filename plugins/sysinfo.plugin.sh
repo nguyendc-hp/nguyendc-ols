@@ -4,7 +4,7 @@
 # Plugin: System Info
 # Project: nguyendc-ols
 # ID: sysinfo
-# Category: SYS
+# Category: SYSTEM
 # ======================================
 
 sysinfo_show() {
@@ -79,6 +79,6 @@ sysinfo_cli() {
 ndc_register_plugin \
   "sysinfo" \
   "System Info" \
-  "SYS" \
+  "SYSTEM" \
   "Xem nhanh thông tin hệ thống, CPU, RAM, Disk, top process" \
   "sysinfo_menu"

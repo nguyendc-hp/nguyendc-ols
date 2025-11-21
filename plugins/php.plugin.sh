@@ -4,7 +4,7 @@
 # Plugin: PHP Manager
 # Project: nguyendc-ols
 # ID: php
-# Category: RUNTIME
+# Category: SYSTEM
 # ======================================
 
 PHP_STATE_KEY="PHP_INSTALLED"
@@ -280,6 +280,6 @@ php_cli() {
 ndc_register_plugin \
   "php" \
   "PHP Manager" \
-  "RUNTIME" \
+  "SYSTEM" \
   "Cài đặt & tối ưu PHP-FPM cho WordPress/app PHP" \
   "php_menu"

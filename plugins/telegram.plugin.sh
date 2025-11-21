@@ -4,7 +4,7 @@
 # Plugin: Telegram Notification
 # Project: nguyendc-ols
 # ID: telegram
-# Category: NOTI
+# Category: OPS
 # ======================================
 
 TELEGRAM_TOKEN_KEY="TELEGRAM_BOT_TOKEN"
@@ -162,6 +162,6 @@ telegram_cli() {
 ndc_register_plugin \
   "telegram" \
   "Telegram Notify" \
-  "NOTI" \
+  "OPS" \
   "Cấu hình Telegram Bot và gửi thông báo" \
   "telegram_menu"

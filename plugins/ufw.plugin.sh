@@ -4,7 +4,7 @@
 # Plugin: UFW Firewall
 # Project: nguyendc-ols
 # ID: ufw
-# Category: SEC
+# Category: SYSTEM
 # ======================================
 
 UFW_STATE_KEY="UFW_INSTALLED"
@@ -128,6 +128,6 @@ ufw_menu() {
 ndc_register_plugin \
   "ufw" \
   "UFW Firewall" \
-  "SEC" \
+  "SYSTEM" \
   "Cài đặt và quản lý UFW firewall" \
   "ufw_menu"

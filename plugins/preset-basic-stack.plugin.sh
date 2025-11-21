@@ -4,7 +4,7 @@
 # Plugin: Basic Stack Preset
 # Project: nguyendc-ols
 # ID: presetbasic
-# Category: PRESET
+# Category: SYSTEM
 # ======================================
 
 presetbasic_check_function() {
@@ -82,6 +82,6 @@ presetbasic_menu() {
 ndc_register_plugin \
   "presetbasic" \
   "Basic Stack Preset" \
-  "PRESET" \
+  "SYSTEM" \
   "Cài stack cơ bản: Nginx + Node/PM2 + MariaDB + Redis" \
   "presetbasic_menu"

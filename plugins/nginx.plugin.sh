@@ -4,7 +4,7 @@
 # Plugin: Nginx
 # Project: nguyendc-ols
 # ID: nginx
-# Category: WEB
+# Category: SYSTEM
 # ======================================
 
 NGINX_SERVICE="nginx"
@@ -156,6 +156,6 @@ nginx_menu() {
 ndc_register_plugin \
   "nginx" \
   "Nginx" \
-  "WEB" \
+  "SYSTEM" \
   "Cài đặt và quản lý web server Nginx" \
   "nginx_menu"

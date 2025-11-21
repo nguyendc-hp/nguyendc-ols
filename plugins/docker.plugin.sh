@@ -4,7 +4,7 @@
 # Plugin: Docker Engine
 # Project: nguyendc-ols
 # ID: docker
-# Category: RUNTIME
+# Category: SYSTEM
 # ======================================
 
 DOCKER_STATE_KEY="DOCKER_INSTALLED"
@@ -112,6 +112,6 @@ docker_menu() {
 ndc_register_plugin \
   "docker" \
   "Docker Engine" \
-  "RUNTIME" \
+  "SYSTEM" \
   "Cài đặt và quản lý Docker Engine + docker-compose" \
   "docker_menu"

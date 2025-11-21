@@ -4,7 +4,7 @@
 # Plugin: pgAdmin 4
 # Project: nguyendc-ols
 # ID: pgadmin
-# Category: GUI
+# Category: DB
 # ======================================
 
 PGADMIN_STATE_KEY="PGADMIN_INSTALLED"
@@ -108,6 +108,6 @@ pgadmin_menu() {
 ndc_register_plugin \
   "pgadmin" \
   "pgAdmin 4" \
-  "GUI" \
+  "DB" \
   "Cài đặt và quản lý pgAdmin 4 cho PostgreSQL" \
   "pgadmin_menu"

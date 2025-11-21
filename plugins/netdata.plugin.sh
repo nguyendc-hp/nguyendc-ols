@@ -4,7 +4,7 @@
 # Plugin: Netdata
 # Project: nguyendc-ols
 # ID: netdata
-# Category: MON
+# Category: OPS
 # ======================================
 
 NETDATA_SERVICE="netdata"
@@ -111,6 +111,6 @@ netdata_menu() {
 ndc_register_plugin \
   "netdata" \
   "Netdata" \
-  "MON" \
+  "OPS" \
   "Cài đặt và quản lý Netdata (monitoring realtime)" \
   "netdata_menu"

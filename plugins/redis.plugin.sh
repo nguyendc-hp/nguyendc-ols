@@ -4,7 +4,7 @@
 # Plugin: Redis
 # Project: nguyendc-ols
 # ID: redis
-# Category: CACHE
+# Category: DB
 # ======================================
 
 REDIS_SERVICE="redis-server"
@@ -157,6 +157,6 @@ redis_menu() {
 ndc_register_plugin \
   "redis" \
   "Redis" \
-  "CACHE" \
+  "DB" \
   "Cài đặt và quản lý Redis (cache/session)" \
   "redis_menu"

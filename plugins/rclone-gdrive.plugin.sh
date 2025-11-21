@@ -4,7 +4,7 @@
 # Plugin: rclone Google Drive Backup
 # Project: nguyendc-ols
 # ID: rclone
-# Category: BKP
+# Category: OPS
 # ======================================
 
 RCLONE_STATE_KEY="RCLONE_INSTALLED"
@@ -122,6 +122,6 @@ rclone_menu() {
 ndc_register_plugin \
   "rclone" \
   "rclone Google Drive" \
-  "BKP" \
+  "OPS" \
   "Backup thư mục backup local lên Google Drive bằng rclone" \
   "rclone_menu"

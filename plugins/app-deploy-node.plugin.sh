@@ -4,7 +4,7 @@
 # Plugin: Node/React App Deploy
 # Project: nguyendc-ols
 # ID: appnode
-# Category: APP
+# Category: NODE
 # ======================================
 
 APP_BASE_DIR="/var/www/apps"
@@ -172,6 +172,6 @@ appnode_menu() {
 ndc_register_plugin \
   "appnode" \
   "Deploy Node/React App" \
-  "APP" \
+  "NODE" \
   "Triển khai app Node/React với PM2 + Nginx (git clone → chạy)" \
   "appnode_menu"

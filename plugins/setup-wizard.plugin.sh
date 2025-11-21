@@ -4,7 +4,7 @@
 # Plugin: First-time Setup Wizard
 # Project: nguyendc-ols
 # ID: setupwizard
-# Category: WIZARD
+# Category: SYSTEM
 # ======================================
 
 # Helper: check function tồn tại
@@ -450,6 +450,6 @@ setupwizard_cli() {
 ndc_register_plugin \
   "setupwizard" \
   "First-time Setup Wizard" \
-  "WIZARD" \
+  "SYSTEM" \
   "Wizard cài combo WordPress / Node.js-React & Monitoring/Alert" \
   "setupwizard_menu"

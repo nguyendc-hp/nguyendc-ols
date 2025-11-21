@@ -4,7 +4,7 @@
 # Plugin: HTTP Check
 # Project: nguyendc-ols
 # ID: httpcheck
-# Category: MON
+# Category: OPS
 # ======================================
 
 HTTPCHECK_CONF="/etc/nguyendc-ols/httpcheck.conf"
@@ -162,6 +162,6 @@ httpcheck_cli() {
 ndc_register_plugin \
   "httpcheck" \
   "HTTP Check" \
-  "MON" \
+  "OPS" \
   "Kiểm tra HTTP status/timeout và gửi cảnh báo Telegram" \
   "httpcheck_menu"
