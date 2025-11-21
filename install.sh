@@ -8,12 +8,12 @@
 
 set -euo pipefail
 
-# Logging functions (without color codes to avoid shell issues)
-# CRITICAL: Log to stderr (>&2) to avoid being captured by command substitution
-log_info()  { echo "[INFO]  $*" >&2; }
-log_warn()  { echo "[WARN]  $*" >&2; }
-log_error() { echo "[ERROR] $*" >&2; }
-log_step()  { echo "[STEP]  $*" >&2; }
+# Logging functions with colors (ANSI codes to stderr to avoid capture)
+# CRITICAL: All output to stderr (>&2) to prevent capture by $() command substitution
+log_info()  { echo -e "[\e[32mINFO\e[0m]  $*" >&2; }
+log_warn()  { echo -e "[\e[33mWARN\e[0m]  $*" >&2; }
+log_error() { echo -e "[\e[31mERROR\e[0m] $*" >&2; }
+log_step()  { echo -e "[\e[34mSTEP\e[0m]  $*" >&2; }
 
 # ============================================================
 # PRE-FLIGHT CHECKS
@@ -186,40 +186,40 @@ print_summary() {
   local install_dir="$1"
 
   echo ""
-  echo "╔════════════════════════════════════════════════════════════════╗"
-  echo "║                                                                ║"
-  echo "║          ✅ nguyendc-ols Installation Complete!               ║"
-  echo "║                                                                ║"
-  echo "╚════════════════════════════════════════════════════════════════╝"
+  echo -e "\e[32m╔════════════════════════════════════════════════════════════════╗\e[0m"
+  echo -e "\e[32m║                                                                ║\e[0m"
+  echo -e "\e[32m║          \e[1m✅ nguyendc-ols Installation Complete!\e[0m\e[32m               ║\e[0m"
+  echo -e "\e[32m║                                                                ║\e[0m"
+  echo -e "\e[32m╚════════════════════════════════════════════════════════════════╝\e[0m"
   echo ""
-  echo "📦 Installation Details:"
-  echo "   • Location: $install_dir"
-  echo "   • Alias: ndc (available globally)"
-  echo "   • Config: /etc/nguyendc-ols"
-  echo "   • Logs: /var/log/nguyendc-ols"
+  echo -e "\e[36m📦 Installation Details:\e[0m"
+  echo -e "   \e[33m•\e[0m Location: \e[1m$install_dir\e[0m"
+  echo -e "   \e[33m•\e[0m Alias: \e[1mndc\e[0m (available globally)"
+  echo -e "   \e[33m•\e[0m Config: \e[1m/etc/nguyendc-ols\e[0m"
+  echo -e "   \e[33m•\e[0m Logs: \e[1m/var/log/nguyendc-ols\e[0m"
   echo ""
-  echo "🚀 Quick Start:"
-  echo "   1. Run the menu:"
-  echo "      ndc"
+  echo -e "\e[36m🚀 Quick Start:\e[0m"
+  echo -e "   \e[33m1.\e[0m Run the menu:"
+  echo -e "      \e[1mndc\e[0m"
   echo ""
-  echo "   2. Or run specific commands:"
-  echo "      ndc wordpress install example.com"
-  echo "      ndc nodejs install"
-  echo "      ndc postgres install"
+  echo -e "   \e[33m2.\e[0m Or run specific commands:"
+  echo -e "      \e[1mndc wordpress install example.com\e[0m"
+  echo -e "      \e[1mndc nodejs install\e[0m"
+  echo -e "      \e[1mndc postgres install\e[0m"
   echo ""
-  echo "📚 Documentation:"
-  echo "   • README: $install_dir/README.md"
-  echo "   • Quick Setup: $install_dir/QUICK_SETUP.md"
-  echo "   • Audit Report: $install_dir/AUDIT_REPORT.md"
+  echo -e "\e[36m📚 Documentation:\e[0m"
+  echo -e "   \e[33m•\e[0m README: \e[1m$install_dir/README.md\e[0m"
+  echo -e "   \e[33m•\e[0m Quick Setup: \e[1m$install_dir/QUICK_SETUP.md\e[0m"
+  echo -e "   \e[33m•\e[0m Audit Report: \e[1m$install_dir/AUDIT_REPORT.md\e[0m"
   echo ""
-  echo "💡 Tips:"
-  echo "   • Type 'ndc' to open the main menu"
-  echo "   • Type 'ndc help' for command list (if available)"
-  echo "   • Read QUICK_SETUP.md for detailed usage guide"
+  echo -e "\e[36m💡 Tips:\e[0m"
+  echo -e "   \e[33m•\e[0m Type '\e[1mndc\e[0m' to open the main menu"
+  echo -e "   \e[33m•\e[0m Type '\e[1mndc help\e[0m' for command list (if available)"
+  echo -e "   \e[33m•\e[0m Read QUICK_SETUP.md for detailed usage guide"
   echo ""
-  echo "🆘 Support:"
-  echo "   • Issues: https://github.com/nguyendc-hp/nguyendc-ols/issues"
-  echo "   • Email: support@nguyendc-ols.com"
+  echo -e "\e[36m🆘 Support:\e[0m"
+  echo -e "   \e[33m•\e[0m Issues: https://github.com/nguyendc-hp/nguyendc-ols/issues"
+  echo -e "   \e[33m•\e[0m Email: support@nguyendc-ols.com"
   echo ""
 }
 

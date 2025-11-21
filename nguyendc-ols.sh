@@ -10,7 +10,10 @@
 set -euo pipefail
 
 # ----- Đường dẫn gốc & thư mục plugin -----
-NDC_BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve symlink to get actual directory (handles /usr/local/bin/ndc symlink)
+NDC_SCRIPT_PATH="${BASH_SOURCE[0]}"
+[[ -L "$NDC_SCRIPT_PATH" ]] && NDC_SCRIPT_PATH="$(readlink -f "$NDC_SCRIPT_PATH")"
+NDC_BASE_DIR="$(cd "$(dirname "$NDC_SCRIPT_PATH")" && pwd)"
 NDC_PLUGINS_DIR="${NDC_BASE_DIR}/plugins"
 
 # ----- Thư mục cấu hình & state -----
