@@ -96,9 +96,9 @@ backup_menu() {
   done
 }
 
-ndc_register_plugin 
-  "backup" 
-  "Simple Backup" 
-  "OPS" 
-  "Backup nhanh /etc/nginx và /var/www vào /opt/nguyendc-ols/backups" 
+ndc_register_plugin \
+  "backup" \
+  "Simple Backup" \
+  "OPS" \
+  "Backup nhanh /etc/nginx và /var/www vào /opt/nguyendc-ols/backups" \
   "backup_menu"

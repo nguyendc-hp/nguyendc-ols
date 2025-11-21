@@ -237,7 +237,11 @@ NDC_PLUGIN_DESCS=()
 NDC_PLUGIN_MENU_FNS=()
 
 ndc_register_plugin() {
-  local id="$1" name="$2" cat="$3" desc="$4" menu_fn="$5"
+  local id="${1-}" name="${2-}" cat="${3-}" desc="${4-}" menu_fn="${5-}"
+
+  if [[ -z "$id" ]]; then
+    return 0
+  fi
 
   NDC_PLUGIN_IDS+=("$id")
   NDC_PLUGIN_NAMES+=("$name")
