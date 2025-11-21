@@ -9,11 +9,22 @@
 
 set -euo pipefail
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+BOLD='\033[1m'
+
 # ----- Đường dẫn gốc & thư mục plugin -----
-# Resolve symlink to get actual directory (handles /usr/local/bin/ndc symlink)
-NDC_SCRIPT_PATH="${BASH_SOURCE[0]}"
-[[ -L "$NDC_SCRIPT_PATH" ]] && NDC_SCRIPT_PATH="$(readlink -f "$NDC_SCRIPT_PATH")"
-NDC_BASE_DIR="$(cd "$(dirname "$NDC_SCRIPT_PATH")" && pwd)"
+# Robust symlink resolution
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+NDC_BASE_DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 NDC_PLUGINS_DIR="${NDC_BASE_DIR}/plugins"
 
 # ----- Thư mục cấu hình & state -----
@@ -49,45 +60,32 @@ state_set() {
 # ----- Header / banner -----
 ndc_header() {
   clear
-  cat <<'EOF'
-╔════════════════════════════════════════════════════════════════╗
-║                                                                ║
-║              nguyendc-ols - VPS Management Tool                ║
-║         WordPress + Node.js + Database Management              ║
-║                                                                ║
-║    Node.js · WordPress · PostgreSQL · MongoDB · MySQL ·        ║
-║    MariaDB · Redis · Backup · Security · Monitoring            ║
-║                                                                ║
-╚════════════════════════════════════════════════════════════════╝
-
-EOF
+  printf "%b" "${CYAN}"
+  printf "%b" "+-----------------------------------------------------------------------+\n"
+  printf "%b" "|                                                                       |\n"
+  printf "%b" "|                       ${BOLD}NDC OLS${CYAN} phiên bản: ${BOLD}1.0.0${CYAN}                        |\n"
+  printf "%b" "|                       Phát triển bởi: Nguyen DC                       |\n"
+  printf "%b" "|                                                                       |\n"
+  printf "%b" "+-----------------------------------------------------------------------+\n"
+  printf "%b" "=========================================================================\n"
+  printf "%b" "Tình trạng máy chủ: ${GREEN}Hoạt động tốt${CYAN}\n"
+  printf "%b" "=========================================================================\n"
+  printf "%b" "${NC}"
 }
 
 # ----- Terminal intro (chạy khi khởi động) -----
 ndc_show_intro() {
   clear
-  cat <<'EOF'
-╔════════════════════════════════════════════════════════════════╗
-║                                                                ║
-║         🚀  Welcome to nguyendc-ols VPS Manager 🚀             ║
-║                                                                ║
-║    Your Complete Solution for:                                ║
-║    ✓ WordPress Installation & Management                      ║
-║    ✓ Node.js Application Deployment                           ║
-║    ✓ Database Management (MongoDB, MySQL, PostgreSQL)          ║
-║    ✓ Backup & Recovery                                        ║
-║    ✓ Security & Monitoring                                    ║
-║    ✓ SSL/HTTPS Automation                                     ║
-║                                                                ║
-║    Type: ndc                 to open the menu                 ║
-║    Type: ndc help            for quick commands               ║
-║                                                                ║
-║    📧 Email: support@nguyendc-ols.com                          ║
-║    🌐 GitHub: nguyendc-hp/nguyendc-ols                        ║
-║                                                                ║
-╚════════════════════════════════════════════════════════════════╝
-
-EOF
+  printf "%b" "${CYAN}"
+  printf "%b" "+-----------------------------------------------------------------------+\n"
+  printf "%b" "|                                                                       |\n"
+  printf "%b" "|                       ${BOLD}NDC OLS${CYAN} phiên bản: ${BOLD}1.0.0${CYAN}                        |\n"
+  printf "%b" "|                  Công cụ quản lý VPS Node.js & React                  |\n"
+  printf "%b" "|                                                                       |\n"
+  printf "%b" "+-----------------------------------------------------------------------+\n"
+  printf "%b" "Chúc bạn có buổi chiều tuyệt vời - Chào mừng bạn đến với NDC OLS\n"
+  printf "%b" "-------------------------------------------------------------------------\n"
+  printf "%b" "${NC}"
 }
 
 # ============================================================
