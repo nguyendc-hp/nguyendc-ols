@@ -184,43 +184,14 @@ install_basic_packages() {
 
 print_summary() {
   local install_dir="$1"
-
-  echo ""
-  echo -e "\e[32m╔════════════════════════════════════════════════════════════════╗\e[0m"
-  echo -e "\e[32m║                                                                ║\e[0m"
-  echo -e "\e[32m║          \e[1m✅ nguyendc-ols Installation Complete!\e[0m\e[32m               ║\e[0m"
-  echo -e "\e[32m║                                                                ║\e[0m"
-  echo -e "\e[32m╚════════════════════════════════════════════════════════════════╝\e[0m"
-  echo ""
-  echo -e "\e[36m📦 Installation Details:\e[0m"
-  echo -e "   \e[33m•\e[0m Location: \e[1m$install_dir\e[0m"
-  echo -e "   \e[33m•\e[0m Alias: \e[1mndc\e[0m (available globally)"
-  echo -e "   \e[33m•\e[0m Config: \e[1m/etc/nguyendc-ols\e[0m"
-  echo -e "   \e[33m•\e[0m Logs: \e[1m/var/log/nguyendc-ols\e[0m"
-  echo ""
-  echo -e "\e[36m🚀 Quick Start:\e[0m"
-  echo -e "   \e[33m1.\e[0m Run the menu:"
-  echo -e "      \e[1mndc\e[0m"
-  echo ""
-  echo -e "   \e[33m2.\e[0m Or run specific commands:"
-  echo -e "      \e[1mndc wordpress install example.com\e[0m"
-  echo -e "      \e[1mndc nodejs install\e[0m"
-  echo -e "      \e[1mndc postgres install\e[0m"
-  echo ""
-  echo -e "\e[36m📚 Documentation:\e[0m"
-  echo -e "   \e[33m•\e[0m README: \e[1m$install_dir/README.md\e[0m"
-  echo -e "   \e[33m•\e[0m Quick Setup: \e[1m$install_dir/QUICK_SETUP.md\e[0m"
-  echo -e "   \e[33m•\e[0m Audit Report: \e[1m$install_dir/AUDIT_REPORT.md\e[0m"
-  echo ""
-  echo -e "\e[36m💡 Tips:\e[0m"
-  echo -e "   \e[33m•\e[0m Type '\e[1mndc\e[0m' to open the main menu"
-  echo -e "   \e[33m•\e[0m Type '\e[1mndc help\e[0m' for command list (if available)"
-  echo -e "   \e[33m•\e[0m Read QUICK_SETUP.md for detailed usage guide"
-  echo ""
-  echo -e "\e[36m🆘 Support:\e[0m"
-  echo -e "   \e[33m•\e[0m Issues: https://github.com/nguyendc-hp/nguyendc-ols/issues"
-  echo -e "   \e[33m•\e[0m Email: support@nguyendc-ols.com"
-  echo ""
+  
+  # Call ndc --info to show the detailed system info
+  if command -v ndc >/dev/null 2>&1; then
+    ndc --info
+  else
+    # Fallback if ndc alias is not yet available in current shell
+    "$install_dir/nguyendc-ols.sh" --info
+  fi
 }
 
 # ============================================================

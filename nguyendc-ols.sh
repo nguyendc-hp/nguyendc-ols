@@ -393,7 +393,7 @@ ndc_main_menu() {
   ndc_check_ubuntu_supported
 
   while true; do
-    ndc_menu_header
+    ndc_banner
     echo ""
     echo -e " ${GREEN}1)${NC}  WordPress tools               ${GREEN}4)${NC} Ops & Monitoring"
     echo -e " ${GREEN}2)${NC}  Node.js tools                 ${GREEN}5)${NC} System & Security"
