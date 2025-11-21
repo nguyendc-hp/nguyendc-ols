@@ -9,10 +9,11 @@
 set -euo pipefail
 
 # Logging functions (without color codes to avoid shell issues)
-log_info()  { echo "[INFO]  $*"; }
+# CRITICAL: Log to stderr (>&2) to avoid being captured by command substitution
+log_info()  { echo "[INFO]  $*" >&2; }
 log_warn()  { echo "[WARN]  $*" >&2; }
 log_error() { echo "[ERROR] $*" >&2; }
-log_step()  { echo "[STEP]  $*"; }
+log_step()  { echo "[STEP]  $*" >&2; }
 
 # ============================================================
 # PRE-FLIGHT CHECKS
