@@ -131,7 +131,7 @@ ndc_system_info() {
 
 # ----- Terminal intro (chạy khi khởi động) -----
 ndc_show_intro() {
-  # Only show system info, no banner (banner is for menu)
+  ndc_banner "no-clear"
   ndc_system_info
 }
 
