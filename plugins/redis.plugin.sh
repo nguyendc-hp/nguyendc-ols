@@ -157,6 +157,6 @@ redis_menu() {
 ndc_register_plugin \
   "redis" \
   "Redis" \
-  "DB" \
-  "Cài đặt và quản lý Redis (cache/session)" \
+  "DATABASE" \
+  "" \
   "redis_menu"

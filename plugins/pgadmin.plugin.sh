@@ -108,6 +108,6 @@ pgadmin_menu() {
 ndc_register_plugin \
   "pgadmin" \
   "pgAdmin 4" \
-  "DB" \
-  "Cài đặt và quản lý pgAdmin 4 cho PostgreSQL" \
+  "DB_GUI" \
+  "" \
   "pgadmin_menu"

@@ -155,6 +155,6 @@ processwatch_cli() {
 ndc_register_plugin \
   "processwatch" \
   "Process Watch" \
-  "OPS" \
-  "Theo dõi service/process quan trọng, báo Telegram khi down" \
+  "MONITORING" \
+  "" \
   "processwatch_menu"

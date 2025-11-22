@@ -450,6 +450,6 @@ setupwizard_cli() {
 ndc_register_plugin \
   "setupwizard" \
   "First-time Setup Wizard" \
-  "SYSTEM" \
-  "Wizard cài combo WordPress / Node.js-React & Monitoring/Alert" \
+  "SETUP" \
+  "" \
   "setupwizard_menu"

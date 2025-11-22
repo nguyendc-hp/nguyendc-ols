@@ -145,6 +145,6 @@ vhost_menu() {
 ndc_register_plugin \
   "vhost" \
   "Nginx VHost" \
-  "SYSTEM" \
-  "Tạo/Xoá/Quản lý Nginx virtual hosts (domain → webroot)" \
+  "DOMAIN_SSL" \
+  "" \
   "vhost_menu"

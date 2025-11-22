@@ -229,6 +229,6 @@ wpsec_cli() {
 ndc_register_plugin \
   "wpsec" \
   "WordPress Security Firewall" \
-  "WORDPRESS" \
-  "Hardening + Nginx rules + Fail2ban cho WordPress" \
+  "WP_OPTIMIZE" \
+  "" \
   "wpsec_menu"

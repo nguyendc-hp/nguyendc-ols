@@ -122,6 +122,6 @@ rclone_menu() {
 ndc_register_plugin \
   "rclone" \
   "rclone Google Drive" \
-  "OPS" \
-  "Backup thư mục backup local lên Google Drive bằng rclone" \
+  "SYSTEM_BACKUP" \
+  "" \
   "rclone_menu"

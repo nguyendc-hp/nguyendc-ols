@@ -107,6 +107,6 @@ unattended_cli() {
 ndc_register_plugin \
   "unattended" \
   "System: Unattended-Upgrades" \
-  "SYSTEM" \
-  "Xem trạng thái, tắt/bật unattended-upgrades, chạy apt guard" \
+  "SYSINFO" \
+  "" \
   "unattended_menu"

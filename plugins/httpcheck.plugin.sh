@@ -162,6 +162,6 @@ httpcheck_cli() {
 ndc_register_plugin \
   "httpcheck" \
   "HTTP Check" \
-  "OPS" \
-  "Kiểm tra HTTP status/timeout và gửi cảnh báo Telegram" \
+  "MONITORING" \
+  "" \
   "httpcheck_menu"

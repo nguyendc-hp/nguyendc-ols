@@ -358,5 +358,5 @@ ndc_register_plugin \
   "wordpress" \
   "WordPress Manager" \
   "WORDPRESS" \
-  "Tạo & tối ưu WordPress (tốc độ + bảo mật)" \
+  "" \
   "wp_menu"

@@ -280,6 +280,6 @@ wpspeed_cli() {
 ndc_register_plugin \
   "wpspeed" \
   "WordPress SpeedPack" \
-  "WORDPRESS" \
-  "Tối ưu tốc độ WordPress (Nginx cache + MU-plugin + wp-config + Redis)" \
+  "WP_OPTIMIZE" \
+  "" \
   "wps_menu"

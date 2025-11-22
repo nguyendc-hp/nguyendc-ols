@@ -123,6 +123,6 @@ certbot_menu() {
 ndc_register_plugin \
   "certbot" \
   "Certbot (SSL)" \
-  "SYSTEM" \
-  "Cài đặt Certbot và cấp SSL Let's Encrypt cho Nginx" \
+  "DOMAIN_SSL" \
+  "" \
   "certbot_menu"

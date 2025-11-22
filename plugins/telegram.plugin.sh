@@ -162,6 +162,6 @@ telegram_cli() {
 ndc_register_plugin \
   "telegram" \
   "Telegram Notify" \
-  "OPS" \
-  "Cấu hình Telegram Bot và gửi thông báo" \
+  "MONITORING" \
+  "" \
   "telegram_menu"

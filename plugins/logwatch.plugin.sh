@@ -54,6 +54,6 @@ logwatch_show_status_line() {
 ndc_register_plugin \
   "logwatch" \
   "Log Watcher" \
-  "OPS" \
-  "Xem nhanh log Nginx, system, nguyendc-ols" \
+  "MONITORING" \
+  "" \
   "logwatch_menu"

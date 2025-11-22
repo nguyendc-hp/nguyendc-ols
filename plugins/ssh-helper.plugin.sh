@@ -275,6 +275,6 @@ sshhelper_cli() {
 ndc_register_plugin \
   "sshhelper" \
   "SSH Tunnel Helper" \
-  "OPS" \
-  "Sinh lệnh SSH tunnel (dashboard, MongoDB, MySQL, PostgreSQL, custom) + gợi ý alias" \
+  "UTILITIES" \
+  "" \
   "sshhelper_menu"

@@ -280,6 +280,6 @@ php_cli() {
 ndc_register_plugin \
   "php" \
   "PHP Manager" \
-  "SYSTEM" \
-  "Cài đặt & tối ưu PHP-FPM cho WordPress/app PHP" \
+  "SETUP" \
+  "" \
   "php_menu"

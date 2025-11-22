@@ -82,6 +82,6 @@ presetbasic_menu() {
 ndc_register_plugin \
   "presetbasic" \
   "Basic Stack Preset" \
-  "SYSTEM" \
-  "Cài stack cơ bản: Nginx + Node/PM2 + MariaDB + Redis" \
+  "SETUP" \
+  "" \
   "presetbasic_menu"

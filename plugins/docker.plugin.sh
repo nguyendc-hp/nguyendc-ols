@@ -112,6 +112,6 @@ docker_menu() {
 ndc_register_plugin \
   "docker" \
   "Docker Engine" \
-  "SYSTEM" \
-  "Cài đặt và quản lý Docker Engine + docker-compose" \
+  "SETUP" \
+  "" \
   "docker_menu"

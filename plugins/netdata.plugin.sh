@@ -111,6 +111,6 @@ netdata_menu() {
 ndc_register_plugin \
   "netdata" \
   "Netdata" \
-  "OPS" \
-  "Cài đặt và quản lý Netdata (monitoring realtime)" \
+  "MONITORING" \
+  "" \
   "netdata_menu"

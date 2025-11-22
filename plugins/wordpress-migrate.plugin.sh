@@ -222,5 +222,5 @@ ndc_register_plugin \
   "wpmigrate" \
   "WordPress Migration" \
   "WORDPRESS" \
-  "Clone / migrate WordPress sang domain khác (files + DB)" \
+  "" \
   "wpm_menu"

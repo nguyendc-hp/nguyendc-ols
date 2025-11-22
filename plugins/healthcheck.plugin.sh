@@ -190,6 +190,6 @@ healthcheck_cli() {
 ndc_register_plugin \
   "healthcheck" \
   "Health Check" \
-  "OPS" \
-  "Kiểm tra CPU/RAM/load/disk và gửi cảnh báo Telegram nếu quá tải" \
+  "MONITORING" \
+  "" \
   "healthcheck_menu"

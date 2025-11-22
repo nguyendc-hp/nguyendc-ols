@@ -114,6 +114,6 @@ cron_menu() {
 ndc_register_plugin \
   "cron" \
   "Cron Manager" \
-  "SYSTEM" \
-  "Quản lý cron cho backup và tác vụ nguyendc-ols" \
+  "UTILITIES" \
+  "" \
   "cron_menu"

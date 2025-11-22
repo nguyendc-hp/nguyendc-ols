@@ -302,7 +302,7 @@ nodealert_cli() {
 
 ndc_register_plugin \
   "nodealert" \
-  "Node Alert (Health + Logs + Telegram)" \
-  "NODE" \
-  "Giám sát Node apps: PM2 + HTTP + logs, gửi cảnh báo Telegram" \
+  "Node Alert" \
+  "MONITORING" \
+  "" \
   "nodealert_menu"

@@ -103,6 +103,6 @@ phpmyadmin_menu() {
 ndc_register_plugin \
   "phpmyadmin" \
   "phpMyAdmin" \
-  "DB" \
-  "Cài đặt và quản lý phpMyAdmin cho MariaDB/MySQL" \
+  "DB_GUI" \
+  "" \
   "phpmyadmin_menu"

@@ -253,6 +253,6 @@ dbgui_cli() {
 ndc_register_plugin \
   "dbgui" \
   "DB GUI Profiles" \
-  "DB" \
-  "Sinh cấu hình kết nối cho MongoDB/MySQL/Postgres/Redis GUI (Compass, DBeaver, TablePlus...)" \
-  "dbg_menu"
+  "DB_GUI" \
+  "" \
+  "dbgui_menu"

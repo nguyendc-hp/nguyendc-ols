@@ -162,6 +162,6 @@ wpbackup_cli() {
 ndc_register_plugin \
   "wpbackup" \
   "WordPress Backup" \
-  "WORDPRESS" \
-  "Backup WordPress (files + DB) + retention + rclone" \
+  "WP_OPTIMIZE" \
+  "" \
   "wpb_menu"
