@@ -185,13 +185,35 @@ install_basic_packages() {
 print_summary() {
   local install_dir="$1"
   
-  # Call ndc --info to show the detailed system info
-  if command -v ndc >/dev/null 2>&1; then
-    ndc --info
-  else
-    # Fallback if ndc alias is not yet available in current shell
-    "$install_dir/nguyendc-ols.sh" --info
+  # Show welcome banner
+  if [[ -f "$install_dir/core/banner.sh" ]]; then
+    source "$install_dir/core/banner.sh"
+    show_welcome_banner
   fi
+}
+
+setup_bashrc_banner() {
+  log_step "Setting up welcome banner in .bashrc..."
+  
+  local bashrc_file="/root/.bashrc"
+  
+  # Kiểm tra xem đã có banner chưa
+  if grep -q "nguyendc-ols banner" "$bashrc_file" 2>/dev/null; then
+    log_info "Banner already exists in .bashrc"
+    return 0
+  fi
+  
+  # Thêm banner vào cuối .bashrc
+  cat >> "$bashrc_file" <<'EOF'
+
+# nguyendc-ols banner
+if [[ -f /opt/nguyendc-ols/core/banner.sh ]]; then
+  source /opt/nguyendc-ols/core/banner.sh
+  show_compact_banner
+fi
+EOF
+  
+  log_info "Banner added to .bashrc"
 }
 
 # ============================================================
@@ -226,6 +248,7 @@ main() {
   create_alias "$INSTALL_DIR"
   setup_directories
   install_basic_packages
+  setup_bashrc_banner
 
   echo ""
 

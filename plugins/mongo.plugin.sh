@@ -31,25 +31,59 @@ mongo_install() {
   log_info "Bắt đầu cài đặt MongoDB..."
 
   if is_debian_like; then
-    apt update
-    # Thử official package, nếu fail thì fallback về mongodb từ repo distro
-    if ! apt install -y mongodb-org; then
-      log_warn "Cài mongodb-org thất bại, thử cài mongodb từ repo mặc định."
-      apt install -y mongodb
-      MONGO_SERVICE="mongodb"
+    # Xác định phiên bản Ubuntu
+    local ubuntu_version
+    ubuntu_version=$(lsb_release -rs 2>/dev/null || echo "22.04")
+    local ubuntu_codename
+    ubuntu_codename=$(lsb_release -cs 2>/dev/null || echo "jammy")
+    
+    log_info "Phát hiện Ubuntu $ubuntu_version ($ubuntu_codename)"
+    
+    # Cài đặt dependencies
+    apt-get update
+    apt-get install -y gnupg curl
+    
+    # Import MongoDB GPG key
+    log_info "Import MongoDB GPG key..."
+    curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | \
+      gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+    
+    # Add MongoDB repository
+    log_info "Thêm MongoDB repository..."
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu $ubuntu_codename/mongodb-org/7.0 multiverse" | \
+      tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+    
+    # Update và cài MongoDB
+    apt-get update
+    if apt-get install -y mongodb-org; then
+      log_info "Đã cài mongodb-org từ official repository"
+    else
+      log_error "Cài mongodb-org thất bại"
+      return 1
     fi
+    
   elif is_rhel_like; then
-    # Tuỳ distro, bạn có thể tinh chỉnh thêm để dùng official repo MongoDB
+    # RHEL/CentOS MongoDB setup
+    log_info "Tạo MongoDB repository cho RHEL/CentOS..."
+    cat > /etc/yum.repos.d/mongodb-org-7.0.repo <<'EOF'
+[mongodb-org-7.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/7.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-7.0.asc
+EOF
+    
     if ! dnf install -y mongodb-org; then
-      log_warn "Cài mongodb-org thất bại, thử cài mongodb từ repo mặc định."
-      dnf install -y mongodb
-      MONGO_SERVICE="mongodb"
+      log_error "Cài mongodb-org thất bại"
+      return 1
     fi
   else
     log_error "Hệ điều hành hiện tại chưa được hỗ trợ cài MongoDB tự động."
     return 1
   fi
 
+  # Enable và start MongoDB
   systemctl enable "$MONGO_SERVICE" --now
 
   if mongo_status_systemd; then
@@ -57,6 +91,7 @@ mongo_install() {
     state_set "$MONGO_STATE_KEY" "1"
   else
     log_error "MongoDB cài xong nhưng dịch vụ không chạy. Vui lòng kiểm tra log."
+    systemctl status "$MONGO_SERVICE" --no-pager
     return 1
   fi
 }

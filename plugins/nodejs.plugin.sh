@@ -20,27 +20,60 @@ pm2_is_installed() {
 
 nodejs_install() {
   if nodejs_is_installed; then
-    log_info "Node.js đã được cài đặt, bỏ qua bước cài."
+    local current_version
+    current_version="$(node -v 2>/dev/null | sed 's/v//')"
+    local major_version="${current_version%%.*}"
+    
+    if [[ "$major_version" -lt 16 ]]; then
+      log_warn "Node.js hiện tại: v$current_version (quá cũ, cần >= v16)"
+      log_info "Bắt đầu upgrade Node.js lên v20 LTS..."
+      
+      # Xóa Node.js cũ
+      if is_debian_like; then
+        apt-get remove -y nodejs npm 2>/dev/null || true
+      elif is_rhel_like; then
+        dnf remove -y nodejs npm 2>/dev/null || true
+      fi
+    else
+      log_info "Node.js đã được cài đặt: v$current_version"
+      state_set "$NODE_STATE_KEY" "1"
+      
+      # Cài PM2 nếu chưa có
+      if ! pm2_is_installed; then
+        log_info "Bắt đầu cài đặt PM2 (global)..."
+        npm install -g pm2
+        if pm2_is_installed; then
+          log_info "Cài đặt PM2 thành công. Phiên bản: $(pm2 -v 2>/dev/null || echo 'unknown')"
+          state_set "$PM2_STATE_KEY" "1"
+        fi
+      else
+        log_info "PM2 đã được cài đặt: $(pm2 -v 2>/dev/null || echo 'unknown')"
+        state_set "$PM2_STATE_KEY" "1"
+      fi
+      return 0
+    fi
+  fi
+
+  # Cài Node.js v20 LTS từ NodeSource
+  log_info "Bắt đầu cài đặt Node.js v20 LTS..."
+  if is_debian_like; then
+    # Cài đặt từ NodeSource (v20 LTS)
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+    apt-get install -y nodejs
+  elif is_rhel_like; then
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+    dnf install -y nodejs
+  else
+    log_error "Hệ điều hành hiện tại chưa được hỗ trợ cài Node.js tự động."
+    return 1
+  fi
+
+  if nodejs_is_installed; then
+    log_info "Cài đặt Node.js thành công. Phiên bản: $(node -v 2>/dev/null || echo 'unknown')"
     state_set "$NODE_STATE_KEY" "1"
   else
-    log_info "Bắt đầu cài đặt Node.js (từ repo hệ điều hành)..."
-    if is_debian_like; then
-      apt update
-      apt install -y nodejs npm
-    elif is_rhel_like; then
-      dnf install -y nodejs npm
-    else
-      log_error "Hệ điều hành hiện tại chưa được hỗ trợ cài Node.js tự động."
-      return 1
-    fi
-
-    if nodejs_is_installed; then
-      log_info "Cài đặt Node.js thành công. Phiên bản: $(node -v 2>/dev/null || echo 'unknown')"
-      state_set "$NODE_STATE_KEY" "1"
-    else
-      log_error "Node.js cài xong nhưng không chạy được."
-      return 1
-    fi
+    log_error "Node.js cài xong nhưng không chạy được."
+    return 1
   fi
 
   # Cài đặt PM2
