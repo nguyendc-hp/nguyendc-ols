@@ -168,6 +168,6 @@ nodejs_menu() {
 ndc_register_plugin \
   "nodejs" \
   "Node.js + PM2" \
-  "NODE" \
-  "Cài đặt và quản lý môi trường Node.js + PM2" \
+  "SETUP" \
+  "" \
   "nodejs_menu"

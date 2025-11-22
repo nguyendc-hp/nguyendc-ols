@@ -308,10 +308,10 @@ ndc_category_menu() {
       break
     fi
 
+    # Bỏ description và tags [xxx]
     while IFS='|' read -r pid pname pdesc pmenu; do
       [[ -z "$pid" ]] && continue
-      printf " ${GREEN}%2d)${NC} %-30s ${CYAN}[%s]${NC}\n" "$idx" "$pname" "$pid"
-      echo -e "     ${pdesc}"
+      printf " ${GREEN}%2d)${NC} %s\n" "$idx" "$pname"
       menu_ids+=("$pid")
       menu_fns+=("$pmenu")
       idx=$((idx+1))
@@ -320,7 +320,7 @@ ndc_category_menu() {
     echo
     echo -e " ${RED}0)${NC} Quay lại"
     echo
-    read -rp "Chọn plugin: " choice
+    read -rp "Chọn chức năng: " choice
 
     if [[ "$choice" == "0" || -z "$choice" ]]; then
       break
@@ -345,7 +345,7 @@ ndc_category_menu() {
 }
 
 # ============================================================
-#  MAIN MENU (TOP LEVEL)
+#  MAIN MENU (TOP LEVEL) - 14 categories theo MENU_STRUCTURE.MD
 # ============================================================
 
 ndc_main_menu() {
@@ -354,22 +354,35 @@ ndc_main_menu() {
   while true; do
     ndc_banner
     echo ""
-    echo -e " ${GREEN}1)${NC}  WordPress tools               ${GREEN}4)${NC} Ops & Monitoring"
-    echo -e " ${GREEN}2)${NC}  Node.js tools                 ${GREEN}5)${NC} System & Security"
-    echo -e " ${GREEN}3)${NC}  Database tools"
+    echo -e " ${GREEN} 1)${NC}  Cài đặt hệ thống                    ${GREEN} 8)${NC}  Giám sát & cảnh báo"
+    echo -e " ${GREEN} 2)${NC}  Quản lý domain & SSL               ${GREEN} 9)${NC}  Ops Dashboard (Node + WordPress)"
+    echo -e " ${GREEN} 3)${NC}  Quản lý WordPress                  ${GREEN}10)${NC}  Sao lưu & phục hồi dự án"
+    echo -e " ${GREEN} 4)${NC}  Tối ưu & bảo mật WordPress         ${GREEN}11)${NC}  Sao lưu & phục hồi hệ thống"
+    echo -e " ${GREEN} 5)${NC}  Quản lý ứng dụng Node.js           ${GREEN}12)${NC}  Bảo mật máy chủ"
+    echo -e " ${GREEN} 6)${NC}  Quản lý Database                   ${GREEN}13)${NC}  Thông tin & chẩn đoán hệ thống"
+    echo -e " ${GREEN} 7)${NC}  Kết nối GUI / SSH Tunnel cho DB   ${GREEN}14)${NC}  Công cụ tiện ích khác"
     echo ""
-    echo -e " ${RED}0)${NC}  Thoát"
+    echo -e " ${RED} 0)${NC}  Thoát"
     echo ""
-    read -rp "Nhập lựa chọn của bạn [0-5]: " c
+    read -rp "Nhập lựa chọn của bạn [0-14]: " c
 
     case "$c" in
-      1) ndc_category_menu "WORDPRESS" "WordPress tools" ;;
-      2) ndc_category_menu "NODE"      "Node.js tools" ;;
-      3) ndc_category_menu "DB"        "Database tools" ;;
-      4) ndc_category_menu "OPS"       "Ops & Monitoring" ;;
-      5) ndc_category_menu "SYSTEM"    "System & Security" ;;
-      0) break ;;
-      *) log_warn "Lựa chọn không hợp lệ."; sleep 1 ;;
+      1)  ndc_category_menu "SETUP"          "Cài đặt hệ thống" ;;
+      2)  ndc_category_menu "DOMAIN_SSL"     "Quản lý domain & SSL" ;;
+      3)  ndc_category_menu "WORDPRESS"      "Quản lý WordPress" ;;
+      4)  ndc_category_menu "WP_OPTIMIZE"    "Tối ưu & bảo mật WordPress" ;;
+      5)  ndc_category_menu "NODE"           "Quản lý ứng dụng Node.js" ;;
+      6)  ndc_category_menu "DATABASE"       "Quản lý Database" ;;
+      7)  ndc_category_menu "DB_GUI"         "Kết nối GUI / SSH Tunnel cho DB" ;;
+      8)  ndc_category_menu "MONITORING"     "Giám sát & cảnh báo" ;;
+      9)  ndc_category_menu "OPS_DASHBOARD"  "Ops Dashboard (Node + WordPress)" ;;
+      10) ndc_category_menu "PROJECT_BACKUP" "Sao lưu & phục hồi dự án" ;;
+      11) ndc_category_menu "SYSTEM_BACKUP"  "Sao lưu & phục hồi hệ thống" ;;
+      12) ndc_category_menu "SECURITY"       "Bảo mật máy chủ" ;;
+      13) ndc_category_menu "SYSINFO"        "Thông tin & chẩn đoán hệ thống" ;;
+      14) ndc_category_menu "UTILITIES"      "Công cụ tiện ích khác" ;;
+      0)  break ;;
+      *)  log_warn "Lựa chọn không hợp lệ."; sleep 1 ;;
     esac
   done
 }

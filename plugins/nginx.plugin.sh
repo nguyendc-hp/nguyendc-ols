@@ -156,6 +156,6 @@ nginx_menu() {
 ndc_register_plugin \
   "nginx" \
   "Nginx" \
-  "SYSTEM" \
-  "Cài đặt và quản lý web server Nginx" \
+  "SETUP" \
+  "" \
   "nginx_menu"

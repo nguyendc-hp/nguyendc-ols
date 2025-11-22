@@ -147,6 +147,6 @@ fail2ban_menu() {
 ndc_register_plugin \
   "fail2ban" \
   "Fail2ban" \
-  "SYSTEM" \
-  "Cài đặt và quản lý Fail2ban chống brute-force" \
+  "SECURITY" \
+  "" \
   "fail2ban_menu"

@@ -78,7 +78,7 @@ sysinfo_cli() {
 
 ndc_register_plugin \
   "sysinfo" \
-  "System Info" \
-  "SYSTEM" \
-  "Xem nhanh thông tin hệ thống, CPU, RAM, Disk, top process" \
+  "Thông tin & chẩn đoán hệ thống" \
+  "SYSINFO" \
+  "" \
   "sysinfo_menu"

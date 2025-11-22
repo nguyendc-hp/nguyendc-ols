@@ -147,6 +147,6 @@ postgres_menu() {
 ndc_register_plugin \
   "postgres" \
   "PostgreSQL" \
-  "DB" \
-  "Cài đặt và quản lý PostgreSQL" \
+  "DATABASE" \
+  "" \
   "postgres_menu"

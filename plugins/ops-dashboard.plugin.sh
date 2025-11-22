@@ -571,6 +571,6 @@ opsdash_cli() {
 ndc_register_plugin \
   "opsdash" \
   "Ops Dashboard (Node + WordPress)" \
-  "OPS" \
-  "Sinh dashboard HTML xem health Node apps + WordPress sites + server metrics" \
+  "OPS_DASHBOARD" \
+  "" \
   "opsdash_menu"

@@ -157,6 +157,6 @@ mariadb_menu() {
 ndc_register_plugin \
   "mariadb" \
   "MariaDB/MySQL" \
-  "DB" \
-  "Cài đặt và quản lý MariaDB/MySQL" \
+  "DATABASE" \
+  "" \
   "mariadb_menu"

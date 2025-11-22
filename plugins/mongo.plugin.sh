@@ -169,6 +169,6 @@ mongo_menu() {
 ndc_register_plugin \
   "mongo" \
   "MongoDB" \
-  "DB" \
-  "Cài đặt và quản lý MongoDB" \
+  "DATABASE" \
+  "" \
   "mongo_menu"

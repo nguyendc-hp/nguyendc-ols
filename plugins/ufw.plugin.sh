@@ -128,6 +128,6 @@ ufw_menu() {
 ndc_register_plugin \
   "ufw" \
   "UFW Firewall" \
-  "SYSTEM" \
-  "Cài đặt và quản lý UFW firewall" \
+  "SECURITY" \
+  "" \
   "ufw_menu"
