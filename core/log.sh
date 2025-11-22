@@ -49,3 +49,9 @@ log_debug() {
   fi
   log_to_file "DEBUG" "$msg"
 }
+
+log_success() {
+  local msg="$1"
+  echo -e "${GREEN}[SUCCESS]${NC} $msg"
+  log_to_file "SUCCESS" "$msg"
+}

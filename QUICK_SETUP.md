@@ -2,273 +2,407 @@
 
 **Version:** 1.0.0  
 **Status:** Production Ready  
-**Last Updated:** 2024
+**Last Updated:** November 2025
 
 ---
 
-## 🚀 Installation (Choose One)
+## 🚀 Cài đặt mới (Fresh Install)
 
-### Option 1: Automated Install (Recommended)
+### Bước 1: Clone repository
 ```bash
+cd ~
+git clone https://github.com/nguyendc-hp/nguyendc-ols.git
+cd nguyendc-ols
+```
+
+### Bước 2: Chạy installer
+```bash
+sudo bash install.sh
+```
+
+Installer sẽ tự động:
+- ✅ Kiểm tra phiên bản Ubuntu (20.04/22.04/24.04)
+- ✅ Cài đặt dependencies (bash, curl, wget, git)
+- ✅ Tạo thư mục `/opt/nguyendc-ols`
+- ✅ Copy toàn bộ code vào `/opt/nguyendc-ols`
+- ✅ Tạo lệnh `ndc` toàn cục
+- ✅ Phân quyền thực thi
+- ✅ Tạo thư mục config `/etc/nguyendc-ols`
+- ✅ Tạo thư mục log `/var/log/nguyendc-ols`
+
+### Bước 3: Kiểm tra cài đặt
+```bash
+which ndc
+# Output: /usr/local/bin/ndc
+
+ndc
+# Hiển thị menu chính với 14 categories
+```
+
+---
+
+## 🔄 Update trên VPS đang có nguyendc-ols
+
+### Cách 1: Update nhanh (giữ nguyên config)
+```bash
+cd /opt/nguyendc-ols
+sudo git pull origin main
+sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
+ndc
+```
+
+### Cách 2: Update toàn bộ (backup + reinstall)
+```bash
+# Backup cấu hình cũ
+sudo cp -r /etc/nguyendc-ols /root/nguyendc-ols-config-backup
+sudo cp -r /opt/nguyendc-ols /root/nguyendc-ols-backup
+
+# Pull code mới
+cd /opt/nguyendc-ols
+sudo git pull origin main
+
+# Restore config nếu cần
+sudo cp -r /root/nguyendc-ols-config-backup/* /etc/nguyendc-ols/
+
+# Kiểm tra
+ndc
+```
+
+### Cách 3: Cài lại hoàn toàn từ đầu
+```bash
+# Xóa phiên bản cũ
+sudo rm -rf /opt/nguyendc-ols
+sudo rm -f /usr/local/bin/ndc
+
+# Backup config (nếu muốn giữ lại)
+sudo cp -r /etc/nguyendc-ols /root/nguyendc-ols-config-backup
+
+# Cài mới
+cd ~
+rm -rf nguyendc-ols
+git clone https://github.com/nguyendc-hp/nguyendc-ols.git
+cd nguyendc-ols
+sudo bash install.sh
+
+# Restore config cũ (optional)
+sudo cp -r /root/nguyendc-ols-config-backup/* /etc/nguyendc-ols/
+```
+
+---
+
+## 🆕 Reset VPS hoàn toàn (VPS trắng)
+
+### Khi nào cần reset?
+- VPS mới toanh chưa cài gì
+- Muốn xóa hết cài lại từ đầu
+- Gặp lỗi nghiêm trọng không fix được
+
+### Bước reset hoàn toàn:
+
+#### 1. Xóa hết dữ liệu cũ (nếu có)
+```bash
+# Xóa code
+sudo rm -rf /opt/nguyendc-ols
+sudo rm -f /usr/local/bin/ndc
+
+# Xóa config (CẨNTHẬN: mất hết cấu hình)
+sudo rm -rf /etc/nguyendc-ols
+
+# Xóa logs
+sudo rm -rf /var/log/nguyendc-ols
+
+# Xóa source code cũ
+cd ~
+rm -rf nguyendc-ols
+```
+
+#### 2. Update hệ thống
+```bash
+sudo apt-get update
+sudo apt-get upgrade -y
+```
+
+#### 3. Cài đặt lại nguyendc-ols
+```bash
+cd ~
 git clone https://github.com/nguyendc-hp/nguyendc-ols.git
 cd nguyendc-ols
 sudo bash install.sh
 ```
 
-The installer will:
-- ✅ Verify Ubuntu version (20.04/22.04/24.04)
-- ✅ Install dependencies
-- ✅ Setup directories
-- ✅ Create 'ndc' alias
-- ✅ Configure permissions
-- ✅ Display quick start guide
-
-### Option 2: Manual Setup (Advanced)
+#### 4. Kiểm tra
 ```bash
+ndc
+```
+
+---
+
+## 📦 Cài đặt bằng tay (Manual Install)
+
+Nếu `install.sh` gặp lỗi, làm thủ công:
+
+```bash
+# Clone code
+cd ~
 git clone https://github.com/nguyendc-hp/nguyendc-ols.git
 cd nguyendc-ols
 
-# Setup manually
+# Tạo thư mục
 sudo mkdir -p /opt/nguyendc-ols
+sudo mkdir -p /etc/nguyendc-ols
+sudo mkdir -p /var/log/nguyendc-ols
+
+# Copy code
 sudo cp -r ./* /opt/nguyendc-ols/
+
+# Phân quyền
 sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
+sudo chmod +x /opt/nguyendc-ols/modules/*.sh
+sudo chmod +x /opt/nguyendc-ols/plugins/*.sh
+
+# Tạo lệnh ndc toàn cục
 sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 
-# Verify
+# Kiểm tra
 which ndc
 ndc
 ```
 
 ---
 
-## ✅ System Requirements
+## 🎯 Sử dụng cơ bản
 
-### Ubuntu Versions
-- ✅ Ubuntu 20.04 LTS
-- ✅ Ubuntu 22.04 LTS
-- ✅ Ubuntu 24.04 LTS
-
-### Minimum Resources
-- **CPU:** 1 core
-- **RAM:** 1 GB (2 GB recommended)
-- **Disk:** 2 GB free space
-- **Network:** Internet connection for downloads
-
-### Prerequisites
-```bash
-# These are usually pre-installed on Ubuntu
-apt-get update
-apt-get install -y bash curl wget git
-```
-
----
-
-## 🎯 Basic Usage
-
-### Open the Main Menu
+### Mở menu chính
 ```bash
 ndc
 ```
 
-You'll see:
+Menu hiển thị 14 categories:
 ```
 ╔════════════════════════════════════════════════════════════════╗
 ║              nguyendc-ols - VPS Management Tool                ║
 ║         WordPress + Node.js + Database Management              ║
 ╚════════════════════════════════════════════════════════════════╝
 
-1. WordPress tools
-2. Node.js tools
-3. Database tools
-4. Ops & Monitoring
-5. System & Security
-0. Exit
+MENU CHÍNH:
+──────────────────────────────────────────────────────
+ 1. SETUP               │  8. MONITORING
+ 2. DOMAIN_SSL          │  9. OPS_DASHBOARD
+ 3. WORDPRESS           │ 10. PROJECT_BACKUP
+ 4. WP_OPTIMIZE         │ 11. SYSTEM_BACKUP
+ 5. NODE                │ 12. SECURITY
+ 6. DATABASE            │ 13. SYSINFO
+ 7. DB_GUI              │ 14. UTILITIES
+──────────────────────────────────────────────────────
+ 0. Exit
 
 Choose:
 ```
 
-### WordPress Operations
+### Category SETUP (Cài đặt hệ thống cơ bản)
 ```bash
-# Interactive menu
-ndc
-# Then select option 1
-
-# Direct commands
-ndc wordpress install example.com
-ndc wordpress ssl example.com
-ndc wordpress backup example.com
-ndc wordpress security example.com
-ndc wordpress speed example.com
-ndc wordpress cache enable example.com
+ndc  # Chọn 1
 ```
+Gồm:
+- Install Nginx + PHP-FPM
+- Install Node.js + PM2
+- Install Docker
+- Setup Wizard (cài stack tự động)
 
-### Node.js Operations
+### Category DOMAIN_SSL (Quản lý domain & SSL)
 ```bash
-# Interactive
-ndc
-# Then select option 2
-
-# Direct commands
-ndc nodejs install
-ndc nodejs app deploy /path/to/app
-ndc nodejs app restart myapp
-ndc nodejs app logs myapp
-ndc nodejs pm2 status
+ndc  # Chọn 2
 ```
+Gồm:
+- Tạo/xóa Nginx VHost
+- Certbot SSL (Let's Encrypt)
+- Quản lý SSL certificates
 
-### Database Operations
+### Category WORDPRESS (Quản lý WordPress)
 ```bash
-# PostgreSQL
-ndc postgres install
-ndc postgres backup mydb
-ndc postgres restore mydb backup.sql
-
-# MySQL/MariaDB
-ndc mysql install
-ndc mysql backup mydb
-ndc mysql optimize mydb
-
-# MongoDB
-ndc mongo install
-ndc mongo backup mydb
-ndc mongo restore mydb
-
-# Redis
-ndc redis install
-ndc redis benchmark
+ndc  # Chọn 3
 ```
+Gồm:
+- Cài đặt WordPress mới
+- Clone/Migrate WordPress
+- Quản lý WordPress sites
 
-### Security Operations
+### Category WP_OPTIMIZE (Tối ưu WordPress)
 ```bash
-# Firewall
-ndc ufw install
-ndc ufw status
-ndc ufw allow 80
-ndc ufw allow 443
-
-# Brute-force protection
-ndc fail2ban install
-ndc fail2ban status
-
-# SSL Certificates
-ndc certbot install
-ndc certbot ssl example.com
-ndc certbot renew
-
-# SSH Hardening
-ndc ssh-helper secure
+ndc  # Chọn 4
 ```
+Gồm:
+- Backup WordPress (files + DB)
+- Security Firewall (hardening + fail2ban)
+- SpeedPack (cache + Redis + tối ưu)
 
-### Backup Operations
+### Category NODE (Node.js Apps)
 ```bash
-ndc backup install
-ndc backup schedule
-ndc backup local status
-ndc backup cloud gdrive
-ndc backup verify
-ndc backup restore
+ndc  # Chọn 5
 ```
+Gồm:
+- Deploy Node.js apps
+- PM2 management
+- Git auto-deploy
+- Blue-Green deployment
+- Health monitoring
+- Logs tracking
 
-### System & Monitoring
+### Category DATABASE (Quản lý Database)
 ```bash
-# System Info
-ndc sysinfo
-ndc sysinfo details
-
-# Monitoring
-ndc netdata install
-ndc monitor install
-ndc monitor dashboard
-
-# Health Checks
-ndc healthcheck run
-ndc healthcheck schedule
+ndc  # Chọn 6
 ```
+Sub-menus:
+- MariaDB/MySQL
+- PostgreSQL
+- MongoDB
+- Redis
+
+### Category DB_GUI (GUI cho Database)
+```bash
+ndc  # Chọn 7
+```
+Gồm:
+- phpMyAdmin (MySQL)
+- pgAdmin (PostgreSQL)
+- SSH Tunnel helper
+- DB GUI profiles
+
+### Category MONITORING (Giám sát)
+```bash
+ndc  # Chọn 8
+```
+Gồm:
+- Health check services
+- HTTP endpoint check
+- Process watch (auto-restart)
+- Telegram notify
+- Logwatch
+- Netdata
+
+### Category PROJECT_BACKUP (Backup dự án)
+```bash
+ndc  # Chọn 10
+```
+Gồm:
+- Backup local projects
+- Schedule backups
+- Restore backups
+
+### Category SYSTEM_BACKUP (Backup hệ thống)
+```bash
+ndc  # Chọn 11
+```
+Gồm:
+- Rclone + Google Drive
+- System snapshots
+
+### Category SECURITY (Bảo mật)
+```bash
+ndc  # Chọn 12
+```
+Gồm:
+- UFW Firewall
+- Fail2ban (chống brute-force)
+- Security audit
+
+### Category SYSINFO (Thông tin hệ thống)
+```bash
+ndc  # Chọn 13
+```
+Gồm:
+- System info
+- Resource usage
+- Unattended-upgrades control
+
+### Category UTILITIES (Tiện ích)
+```bash
+ndc  # Chọn 14
+```
+Gồm:
+- Cron Manager
+- SSH Helper (tunnels)
+- File Manager
 
 ---
 
-## 📋 Common Command Reference
+## 🔧 Cấu hình & thư mục
 
-### WordPress
-| Command | Description |
-|---------|-------------|
-| `ndc wordpress install domain.com` | Install new WordPress |
-| `ndc wordpress ssl domain.com` | Setup SSL certificate |
-| `ndc wordpress backup domain.com` | Create backup |
-| `ndc wordpress cache enable domain.com` | Enable Redis cache |
-| `ndc wordpress security domain.com` | Security hardening |
-
-### Node.js
-| Command | Description |
-|---------|-------------|
-| `ndc nodejs install` | Install Node.js + PM2 |
-| `ndc nodejs app deploy /path` | Deploy app |
-| `ndc nodejs app restart name` | Restart app |
-| `ndc nodejs app logs name` | View logs |
-| `ndc nodejs pm2 status` | Check PM2 status |
-
-### Databases
-| Command | Description |
-|---------|-------------|
-| `ndc postgres install` | Install PostgreSQL |
-| `ndc mysql install` | Install MySQL/MariaDB |
-| `ndc mongo install` | Install MongoDB |
-| `ndc redis install` | Install Redis |
-
-### Security
-| Command | Description |
-|---------|-------------|
-| `ndc ufw install` | Setup firewall |
-| `ndc fail2ban install` | Setup brute-force protection |
-| `ndc certbot install` | Setup SSL automation |
-
----
-
-## 🔧 Configuration
-
-### Config Location
+### Thư mục config
 ```bash
 /etc/nguyendc-ols/
 ├── state.env           # Persistent state (key=value)
-└── [other configs]
+└── [configs khác]
 ```
 
-### View Current State
+### Thư mục cài đặt chính
+```bash
+/opt/nguyendc-ols/
+├── nguyendc-ols.sh     # Main script
+├── core/               # Core functions
+├── modules/            # Core modules
+├── plugins/            # 48 plugins (14 categories)
+├── templates/          # Config templates
+└── utils/              # Utilities
+```
+
+### Thư mục logs
+```bash
+/var/log/nguyendc-ols/
+└── nguyendc-ols.log
+```
+
+### Xem trạng thái hiện tại
 ```bash
 sudo cat /etc/nguyendc-ols/state.env
 ```
 
-### Set Configuration
-State is managed automatically. Manual editing rarely needed:
+---
+
+## ✅ Yêu cầu hệ thống
+
+### Ubuntu Versions
+- ✅ Ubuntu 20.04 LTS
+- ✅ Ubuntu 22.04 LTS
+- ✅ Ubuntu 24.04 LTS
+
+### Resources tối thiểu
+- **CPU:** 1 core
+- **RAM:** 1 GB (khuyến nghị 2 GB)
+- **Disk:** 2 GB free space
+- **Network:** Kết nối Internet
+
+### Dependencies tự động cài
 ```bash
-sudo vi /etc/nguyendc-ols/state.env
+# install.sh sẽ tự động cài:
+apt-get install -y bash curl wget git
 ```
 
 ---
 
-## 🐛 Installation & Usage Troubleshooting
+## 🐛 Xử lý lỗi thường gặp
 
-### Issue 1: "install.sh: No such file or directory"
-**Cause:** You're in the wrong directory or not in the cloned repo
+### Lỗi 1: "install.sh: No such file or directory"
+**Nguyên nhân:** Chưa vào đúng thư mục
 
-**Solution:**
+**Giải pháp:**
 ```bash
-# Make sure you're in the cloned nguyendc-ols directory
+# Kiểm tra bạn đang ở đâu
 pwd
 ls -la install.sh
 
-# Should be in: /root/nguyendc-ols or ~/nguyendc-ols
+# Phải ở trong: ~/nguyendc-ols
 
-# Then run it
+# Chạy lại
 sudo bash install.sh
 ```
 
-### Issue 2: Permission Denied when running 'ndc'
-**Error:** `bash: /usr/local/bin/ndc: Permission denied`
+### Lỗi 2: Permission Denied khi chạy 'ndc'
+**Lỗi:** `bash: /usr/local/bin/ndc: Permission denied`
 
-**Solution:**
+**Giải pháp:**
 ```bash
-# Fix: Make script executable
+# Fix phân quyền
 sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
 sudo chmod +x /usr/local/bin/ndc
 
@@ -277,397 +411,215 @@ which ndc
 ndc
 ```
 
-### Issue 3: "command not found: ndc"
-**Cause:** Alias not created or shell not reloaded
+### Lỗi 3: "command not found: ndc"
+**Nguyên nhân:** Chưa tạo symlink
 
-**Solution:**
+**Giải pháp:**
 ```bash
-# Create the alias manually
+# Tạo symlink thủ công
 sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
 
-# Verify it exists
+# Kiểm tra
 ls -la /usr/local/bin/ndc
 
-# Reload shell or run directly
-/usr/local/bin/ndc
-
-# Or reload your shell
+# Reload shell
 exec bash
 ndc
 ```
 
-### Issue 4: Plugin Directory Not Found
-**Error:** "Không tìm thấy thư mục plugins"
+### Lỗi 4: Plugin Directory Not Found
+**Lỗi:** "Không tìm thấy thư mục plugins"
 
-**Solution:**
+**Giải pháp:**
 ```bash
-# Check if plugins exist
+# Kiểm tra plugins
 ls -la /opt/nguyendc-ols/plugins/
 
-# If empty, files weren't copied
-# Reinstall from the correct directory
+# Nếu rỗng, cài lại
 cd ~/nguyendc-ols
 sudo bash install.sh
 ```
 
-### Issue 5: "no such file or directory" when running ndc
-**Cause:** Script installed in wrong location
+### Lỗi 5: APT Lock (Held by unattended-upgrades)
+**Lỗi:** "E: Could not get lock /var/lib/apt/lists/lock"
 
-**Solution:**
+**Giải pháp:**
 ```bash
-# Check where ndc points to
-ls -la /usr/local/bin/ndc
-
-# Should point to: /opt/nguyendc-ols/nguyendc-ols.sh
-# Verify the target exists
-ls -la /opt/nguyendc-ols/nguyendc-ols.sh
-
-# If not, reinstall:
-sudo mkdir -p /opt/nguyendc-ols
-sudo cp -r ~/nguyendc-ols/* /opt/nguyendc-ols/
-sudo ln -sf /opt/nguyendc-ols/nguyendc-ols.sh /usr/local/bin/ndc
-sudo chmod +x /opt/nguyendc-ols/nguyendc-ols.sh
-```
-
-### Issue 6: APT Lock (Held by unattended-upgrades)
-**Error:** "E: Could not get lock /var/lib/apt/lists/lock"
-
-**Solution:**
-```bash
-# Script automatically handles this
-# If manual intervention needed:
+# Tắt unattended-upgrades tạm thời
 sudo systemctl stop unattended-upgrades
 sudo rm -f /var/lib/apt/lists/lock
 sudo apt-get update
 ```
 
-### Issue 7: Permission Issues with WordPress
-**After installing WordPress:**
+### Lỗi 6: Git pull failed
+**Lỗi:** "error: Your local changes to the following files would be overwritten"
 
+**Giải pháp:**
 ```bash
-# Fix WordPress directory permissions
-sudo chown -R www-data:www-data /var/www/example.com
-sudo chmod -R 755 /var/www/example.com
+cd /opt/nguyendc-ols
 
-# Fix wp-content permissions
-sudo chmod -R 775 /var/www/example.com/wp-content
-```
+# Backup changes
+sudo git stash
 
-### Issue 8: SSL Certificate Issues
-```bash
-# Check certificate status
-sudo certbot certificates
+# Pull mới
+sudo git pull origin main
 
-# Renew manually
-sudo certbot renew
-
-# For specific domain
-sudo certbot renew --cert-name example.com
+# Apply changes lại (optional)
+sudo git stash pop
 ```
 
 ---
 
-## ✅ Verification Checklist
-
-After installation, verify everything works:
+## ✅ Checklist sau khi cài đặt
 
 ```bash
-# 1. Check ndc command exists
+# 1. Kiểm tra lệnh ndc
 which ndc
 # Output: /usr/local/bin/ndc
 
-# 2. Check installation directory
+# 2. Kiểm tra thư mục cài đặt
 ls -la /opt/nguyendc-ols/
-# Should have: nguyendc-ols.sh, plugins/, core/, README.md
+# Phải có: nguyendc-ols.sh, plugins/, core/, modules/
 
-# 3. Check config directory
+# 3. Kiểm tra config
 sudo ls -la /etc/nguyendc-ols/
-# Should be writable by root
 
-# 4. Check log directory
+# 4. Kiểm tra logs
 sudo ls -la /var/log/nguyendc-ols/
-# Should exist
 
-# 5. Run ndc without arguments (shows menu)
+# 5. Chạy ndc
 ndc
-# Should display welcome screen and menu
+# Hiển thị menu với 14 categories
 
-# 6. Check plugin loading
-ndc help
-# Should list available plugins (if help plugin exists)
+# 6. Đếm số plugins
+ls -1 /opt/nguyendc-ols/plugins/*.plugin.sh | wc -l
+# Output: 48
 ```
 
 ---
 
-## 📊 Logs & Debugging
+## 📊 Xem logs
 
-### Main Log File
+### Log chính
 ```bash
-# View logs
+# Xem real-time
 sudo tail -f /var/log/nguyendc-ols.log
 
-# Clear logs
+# Xem toàn bộ
+sudo cat /var/log/nguyendc-ols.log
+
+# Xóa logs
 sudo truncate -s 0 /var/log/nguyendc-ols.log
 ```
 
-### Enable Debug Mode
+### Debug mode
 ```bash
 NGUYENDC_OLS_DEBUG=1 ndc
-```
-
-### Check Plugin Loading
-```bash
-ndc help
-# Lists all loaded plugins
-```
-
----
-
-## 🛠️ Advanced Usage
-
-### Custom Plugin Directory
-```bash
-# Plugins are auto-loaded from:
-/opt/nguyendc-ols/plugins/
-
-# All *.plugin.sh files are loaded automatically
-```
-
-### Using CLI Mode (Non-Interactive)
-```bash
-# CLI mode for scripts
-ndc wordpress install example.com
-ndc nodejs app deploy /path/to/app
-ndc backup schedule
-
-# Run and exit (no menu)
-```
-
-### Creating Cron Jobs
-```bash
-# Backup every day at 2 AM
-0 2 * * * /usr/local/bin/ndc backup local status
-
-# Certbot renewal check (typically auto)
-0 12 * * * /usr/local/bin/ndc certbot renew
-
-# System health check daily
-0 6 * * * /usr/local/bin/ndc healthcheck run
-```
-
----
-
-## 📞 Getting Help
-
-### View Plugin Help
-```bash
-ndc wordpress
-ndc nodejs
-ndc postgres
-# Then select "Help" option or read on-screen menu
-```
-
-### Documentation
-- **README.md** - Full project documentation
-- **QUICKSTART.md** - Fast reference
-- **AUDIT_REPORT.md** - Code quality details
-- **docs/TROUBLESHOOTING.md** - Common issues
-
-### Support
-- **GitHub Issues:** [Report bugs](https://github.com/nguyendc-hp/nguyendc-ols/issues)
-- **Email:** support@nguyendc-ols.com
-
----
-
-## 🔄 Updating nguyendc-ols
-
-### Check Version
-```bash
-cat /opt/nguyendc-ols/VERSION
-# or
-ndc version
-```
-
-### Update to Latest
-```bash
-cd /opt/nguyendc-ols
-git pull origin main
-sudo systemctl restart nguyendc-ols 2>/dev/null || true
-```
-
-### Backup Before Update
-```bash
-sudo cp -r /opt/nguyendc-ols /opt/nguyendc-ols.backup
 ```
 
 ---
 
 ## 🎓 Best Practices
 
-### 1. Regular Backups
+### 1. Backup config trước khi update
 ```bash
-# Setup automated daily backups
-ndc backup install
-ndc backup schedule
-
-# Verify backup integrity
-ndc backup verify
+sudo cp -r /etc/nguyendc-ols /root/backup-config-$(date +%Y%m%d)
 ```
 
-### 2. Security Hardening
+### 2. Test trên VPS trắng trước
 ```bash
-# Always enable firewall
-ndc ufw install
-
-# Enable fail2ban for protection
-ndc fail2ban install
-
-# Setup SSL for all sites
-ndc certbot ssl example.com
+# Tạo snapshot VPS trước khi cài
+# Hoặc test trên VPS test riêng
 ```
 
-### 3. Monitoring
+### 3. Update thường xuyên
 ```bash
-# Install monitoring
-ndc netdata install
-ndc monitor install
-
-# Check system health
-ndc healthcheck run
-```
-
-### 4. Regular Updates
-```bash
-# Keep system updated
-sudo apt-get update
-sudo apt-get upgrade -y
-
-# Update nguyendc-ols
+# Mỗi tuần check update
 cd /opt/nguyendc-ols
-git pull
+sudo git fetch
+sudo git status
+```
+
+### 4. Giữ logs sạch sẽ
+```bash
+# Xóa logs cũ hàng tháng
+sudo find /var/log/nguyendc-ols/ -type f -mtime +30 -delete
 ```
 
 ---
 
-## 📈 Performance Tips
+## 🚀 Các bước tiếp theo
 
-### 1. Enable Caching
+### 1. Cài stack cơ bản
 ```bash
-# For WordPress
-ndc wordpress cache enable example.com
-
-# For Node.js with Redis
-ndc redis install
+ndc
+# Chọn 1. SETUP → Setup Wizard
+# Sẽ tự động cài: Nginx + Node.js + MariaDB + Redis
 ```
 
-### 2. Optimize Databases
+### 2. Setup WordPress đầu tiên
 ```bash
-# PostgreSQL optimization
-ndc postgres optimize mydb
-
-# MySQL optimization
-ndc mysql optimize mydb
+ndc
+# Chọn 3. WORDPRESS → Install WordPress
+# Nhập domain: example.com
 ```
 
-### 3. Web Server Optimization
+### 3. Cài SSL
 ```bash
-# Nginx optimization
-ndc nginx install
-ndc nginx config example.com
+ndc
+# Chọn 2. DOMAIN_SSL → Certbot SSL
+# Nhập domain: example.com
 ```
 
-### 4. Monitor Performance
+### 4. Bật firewall
 ```bash
-ndc monitor install
-ndc monitor dashboard
+ndc
+# Chọn 12. SECURITY → UFW Firewall → Install
 ```
 
----
-
-## 🚨 Critical Operations
-
-### Database Backup (IMPORTANT)
+### 5. Setup backup tự động
 ```bash
-# Always backup before major changes
-ndc postgres backup mydb
-ndc mysql backup mydb
-ndc mongo backup mydb
+ndc
+# Chọn 10. PROJECT_BACKUP → Schedule Backups
 ```
 
-### SSL Renewal Check
+### 6. Cài monitoring
 ```bash
-# Check certificate expiration
-sudo certbot certificates
-
-# Manual renewal if needed
-sudo certbot renew --force-renewal
-```
-
-### System Upgrade
-```bash
-# Backup first!
-ndc backup local status
-
-# Then upgrade
-sudo apt-get update
-sudo apt-get upgrade -y
+ndc
+# Chọn 8. MONITORING → Netdata
 ```
 
 ---
 
-## ✨ Tips & Tricks
+## 📞 Hỗ trợ
 
-### Speed Up Commands
-```bash
-# Create aliases for frequent commands
-alias wp='ndc wordpress'
-alias node='ndc nodejs'
-alias db='ndc postgres'
+### Documentation
+- **README.md** - Full documentation
+- **QUICKSTART.md** - Quick reference
+- **MENU_STRUCTURE.MD** - Menu structure
+- **docs/** - Chi tiết từng module
 
-# Add to ~/.bashrc for permanent aliases
-```
-
-### Batch Operations
-```bash
-# Update all WordPress sites
-for domain in $(ls /var/www/); do
-  ndc wordpress backup $domain
-done
-```
-
-### Monitoring Multiple Sites
-```bash
-# Check all WordPress sites
-find /var/www -name "wp-config.php" -type f
-
-# Check all Node apps
-ndc nodejs app list
-```
+### GitHub
+- **Issues:** [Báo lỗi](https://github.com/nguyendc-hp/nguyendc-ols/issues)
+- **Discussions:** [Thảo luận](https://github.com/nguyendc-hp/nguyendc-ols/discussions)
 
 ---
 
-## 🎯 Next Steps
+## 📝 Tóm tắt
 
-1. **Install nguyendc-ols** using one of the methods above
-2. **Run the setup wizard** - `ndc setup-wizard` (if available)
-3. **Configure your first domain** - WordPress or Node.js
-4. **Setup backups** - Automate daily backups
-5. **Enable monitoring** - Track system health
-6. **Harden security** - Firewall, SSL, Fail2ban
+**nguyendc-ols** - công cụ quản lý VPS hoàn chỉnh:
+- ✅ 48 plugins - 14 categories
+- ✅ Menu đơn giản, dễ sử dụng
+- ✅ Tự động hóa backup & monitoring
+- ✅ Miễn phí, open-source
+- ✅ Production-ready
 
----
-
-## 📝 Summary
-
-nguyendc-ols is ready to manage your VPS:
-- ✅ 45+ built-in plugins
-- ✅ Simple command-line interface
-- ✅ Automated backup & monitoring
-- ✅ Zero-cost, open-source
-- ✅ Production-ready security
-
-**Start managing your VPS today:**
+**Bắt đầu ngay:**
 ```bash
+cd ~
+git clone https://github.com/nguyendc-hp/nguyendc-ols.git
+cd nguyendc-ols
+sudo bash install.sh
 ndc
 ```
 
@@ -675,4 +627,4 @@ ndc
 
 **Made with ❤️ by nguyendc-hp**
 
-For the latest updates and documentation, visit: https://github.com/nguyendc-hp/nguyendc-ols
+GitHub: https://github.com/nguyendc-hp/nguyendc-ols
